@@ -1,8 +1,8 @@
 // --- PHYSICS & SVG SIMULATION ---
 const planesData = [
-  { id: "K", latDeg: 65, color: "#a855f7" },
+  { id: "K", latDeg: 80, color: "#a855f7" },
   { id: "L", latDeg: 0, color: "#3b82f6" },
-  { id: "M", latDeg: -55, color: "#ec4899" }
+  { id: "M", latDeg: -45, color: "#ec4899" }
 ];
 
 const elements = {
@@ -279,31 +279,38 @@ function shootWind() {
   // It curves "right" relative to its path, landing in the South-West!
   windPath.setAttribute("d", `M ${startX} ${startY} Q ${CX} ${CY - 60} ${endX} ${endY}`);
 
-  // Reset dash array for drawing animation
+  // Reset dash array for drawing animation (Disable transition so it snaps back instantly)
+  windPath.style.transition = "none";
+  windPath.classList.remove('blink-arrow'); // Clear blink if running again
+  windPath.style.opacity = "1";
+
   const length = windPath.getTotalLength();
   windPath.style.strokeDasharray = length;
   windPath.style.strokeDashoffset = length;
-  windPath.style.opacity = "1";
 
-  // Trigger reflow
+  // Force a clean reflow
   windPath.getBoundingClientRect();
 
-  windPath.style.transition = "stroke-dashoffset 2s ease-out";
-  windPath.style.strokeDashoffset = "0";
+  // Allow browser time to apply "none" transition before we activate it again
+  setTimeout(() => {
+    windPath.style.transition = "stroke-dashoffset 2s ease-out";
+    windPath.style.strokeDashoffset = "0";
+  }, 50);
 
   setTimeout(() => {
     document.getElementById('feedback-3').classList.remove('hidden');
     document.getElementById('next-3').classList.remove('hidden');
     btn.textContent = "✅ Rüzgâr Sapması Doğrulandı";
 
+    // Start blinking after the path is fully drawn
+    windPath.classList.add('blink-arrow');
+
     // reset visual after a while to let them play again if needed
     setTimeout(() => {
-      windPath.style.transition = "opacity 0.5s";
-      windPath.style.opacity = "0";
       btn.disabled = false;
       btn.textContent = "🌪 Rüzgârı Tekrar Fırlat";
-    }, 4000);
-  }, 2200);
+    }, 1500); // Allow them to click again sooner, arrow stays blinking
+  }, 2100);
 }
 
 // Step 4: True/False Conclusion

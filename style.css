@@ -432,6 +432,23 @@ input[type=range]:focus {
   border-bottom: none;
 }
 
+/* BLINK ANIMATION FOR WIND ARROW */
+@keyframes blink-opacity {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.blink-arrow {
+  animation: blink-opacity 1.5s infinite ease-in-out;
+}
+
 @media (max-width: 900px) {
   .layout-scenario {
     grid-template-columns: 1fr;

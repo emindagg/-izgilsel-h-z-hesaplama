@@ -18,7 +18,7 @@
     <div class="main-content layout-scenario">
       <div class="col-viz">
         <div class="panel viz-panel">
-          <svg id="globe" viewBox="0 0 500 500" width="100%" height="auto">
+          <svg id="globe" viewBox="0 0 500 500" width="100%">
             <defs>
               <radialGradient id="globeGrad" cx="35%" cy="35%" r="65%">
                 <stop offset="0%" stop-color="#27272a" />
@@ -92,8 +92,8 @@
           <div id="step-intro" class="scenario-step active">
             <span class="badge intro-badge">Giriş Durumu</span>
             <h2>Üç Pilotun Görevi</h2>
-            <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> (bizim simülasyonda 0°,
-              55°, 65°) enlemlerinde aynı anda havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
+            <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> enlemlerinde aynı anda
+              havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
               ederek (örneğin 24 saatte) tam bir tur atmak.</p>
             <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilotun motorları neredeyse yanmak üzereyken, kutba yakın
               pilot oldukça sakin bir uçuş gerçekleştirmiş. <strong>Peki Neden?</strong></p>
@@ -104,17 +104,18 @@
           <div id="step-1" class="scenario-step">
             <span class="badge">Aşama 1 (SB1): Verileri Tanımlama</span>
             <h2>Hız İhtiyacını Belirleme</h2>
-            <p>Yandaki simülasyonda M(-55° Güney), L(0° Ekvator) ve K(65° Kuzey) uçaklarını görüyorsunuz. Dünya ile
+            <p>Yandaki simülasyonda M(45° Güney), L(0° Ekvator) ve K(80° Kuzey) uçaklarını görüyorsunuz. Dünya ile
               birlikte dönerek 1 turu aynı anda tamamlıyorlar.</p>
             <p class="question">En uzun yörüngeye sahip olup, bu yolu aynı sürede bitirmek için en yüksek
-              <strong>çizgisel hıza</strong> (ok büyüklüğüne) ihtiyaç duyan uçak hangisidir?</p>
+              <strong>çizgisel hıza</strong> (ok büyüklüğüne) ihtiyaç duyan uçak hangisidir?
+            </p>
 
             <div class="choice-group">
-              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('K', this)">K Uçağı (65°
+              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('K', this)">K Uçağı (80°
                 Kuzey)</button>
               <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('L', this)">L Uçağı (0°
                 Ekvator)</button>
-              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('M', this)">M Uçağı (55°
+              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('M', this)">M Uçağı (45°
                 Güney)</button>
             </div>
 
