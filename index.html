@@ -194,13 +194,22 @@
               <p><strong>Yansıtma:</strong> Eğer Dünya'nın dönüş hızı her enlemde aynı olsaydı (Dünya tıpkı bir silindir
                 gibi dönseydi), iklim sistemindeki "Alizeler" veya "Batı Rüzgârları" yine bugünkü gibi yön değiştirerek
                 eser miydi?</p>
-              <p class="mt-2 text-sm opacity-80">(Cevap: Hayır, atmosfer tıpkı bir kutu gibi birlikte hareket ederdi.)
-              </p>
+
+              <div class="choice-group mt-4">
+                <button class="btn secondary choice-btn step-outro-btn" onclick="checkStepOutro('Evet', this)">Evet,
+                  Dünya döndüğü sürece sapma olur.</button>
+                <button class="btn secondary choice-btn step-outro-btn" onclick="checkStepOutro('Hayır', this)">Hayır,
+                  sistem aynı hızla döneceği için savrulma olmazdı.</button>
+              </div>
+              <div id="feedback-outro" class="feedback-box hidden mt-4"></div>
             </div>
-            <p class="mt-4 text-muted text-sm border-t pt-4"><strong>Değerlendirme:</strong> Uçakların hız farkından
+
+            <div id="final-evaluation" class="hidden mt-4 text-muted text-sm border-t pt-4">
+              <strong>Değerlendirme:</strong> Uçakların hız farkından
               yola çıkarak devasa bir atmosferik sistemi çözümlediniz! Dünya'nın küresel şekli ve dönüşü, sadece zamanı
-              değil havayı, akıntıları ve iklimi de büyük bir haritayla yönetiyor.</p>
-            <button class="btn secondary mt-4 w-full" onclick="resetScenario()">Yeniden Başla</button>
+              değil havayı, akıntıları ve iklimi de büyük bir haritayla yönetiyor.
+              <button class="btn secondary mt-4 w-full" onclick="resetScenario()">Yeniden Başla</button>
+            </div>
           </div>
 
         </div>

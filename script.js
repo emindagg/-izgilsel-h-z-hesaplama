@@ -332,10 +332,35 @@ function checkStep4(answer, btnObj) {
   }
 }
 
+// Step Outro: Final Question
+function checkStepOutro(answer, btnObj) {
+  document.querySelectorAll('.step-outro-btn').forEach(b => {
+    b.classList.remove('selected', 'correct', 'wrong');
+  });
+
+  const feedbackOutro = document.getElementById('feedback-outro');
+  const finalEval = document.getElementById('final-evaluation');
+
+  if (answer === 'Hayır') {
+    btnObj.classList.add('correct');
+    feedbackOutro.className = 'feedback-box success mt-4';
+    feedbackOutro.innerHTML = '<strong>Tebrikler!</strong> Doğru cevap. Eğer hız farkı olmasaydı atmosfer de tıpkı bir kutu gibi birlikte hareket ederdi, rüzgârların yönünü saptıracak bir savrulma ortaya çıkmazdı.';
+    finalEval.classList.remove('hidden');
+  } else {
+    btnObj.classList.add('wrong');
+    feedbackOutro.className = 'feedback-box error mt-4';
+    feedbackOutro.innerHTML = '<strong>Tekrar düşünün.</strong> Sapmayı yaratan şey sadece Dünya\'nın dönmesi değil, Ekvator ile Kutuplar arasındaki <em>hız farkı</em>\'dır.';
+    finalEval.classList.add('hidden');
+  }
+}
+
 function resetScenario() {
   document.querySelectorAll('.feedback-box').forEach(fb => fb.classList.add('hidden'));
   document.querySelectorAll('.next-step, [id^="next-"]').forEach(btn => btn.classList.add('hidden'));
   document.querySelectorAll('.choice-btn, .chip').forEach(btn => btn.classList.remove('selected', 'correct', 'wrong'));
+
+  const finalEval = document.getElementById('final-evaluation');
+  if (finalEval) finalEval.classList.add('hidden');
 
   const blank = document.getElementById('blank-word');
   if (blank) {
