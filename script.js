@@ -1,37 +1,29 @@
+// --- PHYSICS & SVG SIMULATION ---
 const planesData = [
-  { id: "K", latDeg: 65, color: "#a855f7" }, // Purple
-  { id: "L", latDeg: 0, color: "#3b82f6" }, // Blue (Equator)
-  { id: "M", latDeg: -55, color: "#ec4899" }  // Pink
+  { id: "K", latDeg: 65, color: "#a855f7" },
+  { id: "L", latDeg: 0, color: "#3b82f6" },
+  { id: "M", latDeg: -55, color: "#ec4899" }
 ];
 
 const elements = {
   timeRange: document.getElementById('timeRange'),
   timeLabel: document.getElementById('timeLabel'),
-  radiusInput: document.getElementById('radiusInput'),
-  radiusLabel: document.getElementById('radiusLabel'),
   tableBody: document.getElementById('tableBody'),
-  toggleAnimBtn: document.getElementById('toggleAnim'),
-  showAnswerBtn: document.getElementById('showAnswer'),
-  answerBox: document.getElementById('answer'),
   globe: document.getElementById('globe'),
   planesGroup: document.getElementById('planes'),
   parallelsBack: document.getElementById('parallels-back')
 };
 
-let isAnimating = false;
 let startTime = 0;
-let currentTheta = 0; // Starts at 0 (Right edge of globe)
+const CX = 250, CY = 250, R = 200, Rkm = 6371;
+const TILT = 0.35;
 
-// Globe configuration
-const CX = 250, CY = 250, R = 200;
-const TILT = 0.35; // Tilt factor (sin of pitch angle) for realistic 3D perception
-
-function init() {
+function initSim() {
   drawMeridians();
   drawStaticParallels();
-  updateData(); // Sets table and dynamically draws orbits and planes
-  setupEventListeners();
-  updatePlanesPositions(Math.PI / 4); // Start static planes at 45 degree angle for visual appeal
+  updateData();
+  elements.timeRange.addEventListener('input', updateData);
+  requestAnimationFrame(loop);
 }
 
 function drawMeridians() {
@@ -54,12 +46,11 @@ function drawMeridians() {
 
 function drawStaticParallels() {
   for (let lat = -75; lat <= 75; lat += 15) {
-    if (planesData.find(p => p.latDeg === lat)) continue; // skip the ones with planes
+    if (planesData.find(p => p.latDeg === lat)) continue;
     const rad = lat * Math.PI / 180;
     const rx = R * Math.cos(rad);
     const ry = rx * TILT;
     const cy = CY - R * Math.sin(rad);
-
     const ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
     ellipse.setAttribute("cx", CX);
     ellipse.setAttribute("cy", cy);
@@ -73,16 +64,13 @@ function drawStaticParallels() {
 }
 
 function renderPlaneOrbits() {
-  // Clear only planes so we can rebuild upon update without clearing grid
   elements.planesGroup.innerHTML = '';
-
   planesData.forEach(plane => {
     const latRad = plane.latDeg * Math.PI / 180;
     const rx = R * Math.cos(latRad);
     const ry = rx * TILT;
     const yCenter = CY - R * Math.sin(latRad);
 
-    // Dynamic Orbit Path
     const orbit = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
     orbit.setAttribute("cx", CX);
     orbit.setAttribute("cy", yCenter);
@@ -95,11 +83,10 @@ function renderPlaneOrbits() {
     orbit.style.opacity = "0.3";
     elements.planesGroup.appendChild(orbit);
 
-    // Creating the plane group
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.id = "plane-" + plane.id;
 
-    // Plane velocity vector (arrow)
+    // Velocity Vector
     const vector = document.createElementNS("http://www.w3.org/2000/svg", "line");
     vector.id = "vec-" + plane.id;
     vector.setAttribute("x1", "0");
@@ -109,10 +96,9 @@ function renderPlaneOrbits() {
     vector.setAttribute("marker-end", `url(#arrowhead-${plane.id})`);
     vector.setAttribute("stroke-linecap", "round");
 
-    // Plane marker (sleek jet icon)
+    // Plane marker
     const planeIconGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     planeIconGroup.id = "iconGroup-" + plane.id;
-
     const dotGlow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     dotGlow.setAttribute("r", "12");
     dotGlow.setAttribute("fill", plane.color);
@@ -127,7 +113,6 @@ function renderPlaneOrbits() {
     planeIconGroup.appendChild(dotGlow);
     planeIconGroup.appendChild(planeShape);
 
-    // Text Label for Plane
     const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
     label.textContent = plane.id;
     label.setAttribute("x", "16");
@@ -146,20 +131,12 @@ function renderPlaneOrbits() {
 }
 
 function updatePlanesPositions(theta) {
-  // Normalize theta to 0 - 2PI range
   const normTheta = theta % (2 * Math.PI);
-
-  // Math logic:
-  // For the physical animation, the planes all complete 1 tour in exactly T hours.
-  // Their angular velocity (Omega) is equal. So theta is the same for all.
-  // BUT their tangential physical speed differs, so the vector arrow must reflect this.
-
   planesData.forEach(plane => {
     const latRad = plane.latDeg * Math.PI / 180;
     const rx = R * Math.cos(latRad);
     const ry = rx * TILT;
     const yCenter = CY - R * Math.sin(latRad);
-
     const x = CX + rx * Math.cos(normTheta);
     const y = yCenter + ry * Math.sin(normTheta);
 
@@ -168,29 +145,21 @@ function updatePlanesPositions(theta) {
 
     g.setAttribute("transform", `translate(${x}, ${y})`);
 
-    // Depth sorting (dim it if on the backside of the globe)
     if (Math.sin(normTheta) < 0) {
       g.style.opacity = "0.2";
-      g.querySelector("text").style.display = "none"; // Hide label on backside to avoid clutter
+      g.querySelector("text").style.display = "none";
     } else {
       g.style.opacity = "1";
       g.querySelector("text").style.display = "block";
     }
 
-    // Velocity Vector
-    // Derivative (tangent): dx = -rx*sin(theta), dy = ry*cos(theta)
     const dx = -rx * Math.sin(normTheta);
     const dy = ry * Math.cos(normTheta);
-
-    // Constant scaling factor to make visual arrows proportionate to their true linear velocity (rx)
-    // The length of the tangent on the orthographic projection varies slightly which creates a true 3D effect!
     const vecScale = 0.45;
-    const vecX = dx * vecScale;
-    const vecY = dy * vecScale;
 
     const vector = document.getElementById("vec-" + plane.id);
-    vector.setAttribute("x2", vecX);
-    vector.setAttribute("y2", vecY);
+    vector.setAttribute("x2", dx * vecScale);
+    vector.setAttribute("y2", dy * vecScale);
 
     const iconGroup = document.getElementById("iconGroup-" + plane.id);
     if (iconGroup) {
@@ -202,79 +171,170 @@ function updatePlanesPositions(theta) {
 
 function updateData() {
   const T = parseFloat(elements.timeRange.value);
-  const Rkm = parseFloat(elements.radiusInput.value);
-
   elements.timeLabel.textContent = T;
-  elements.radiusLabel.textContent = Rkm;
 
   let html = "";
-
-  // Sort planes by speed just for displaying in logical order (L, M, K)
   const sortedPlanes = [...planesData].sort((a, b) => Math.abs(a.latDeg) - Math.abs(b.latDeg));
 
   sortedPlanes.forEach(plane => {
-    const latRad = Math.abs(plane.latDeg) * Math.PI / 180;
-    const radius = Math.cos(latRad);
-    const rKm = Rkm * radius;
-    const circumference = 2 * Math.PI * rKm;
+    const radius = Math.cos(Math.abs(plane.latDeg) * Math.PI / 180);
+    const circumference = 2 * Math.PI * (Rkm * radius);
     const speed = circumference / T;
 
     html += `
       <tr>
-        <td><strong>${plane.id}</strong></td>
+        <td><strong style="color:${plane.color}">${plane.id}</strong></td>
         <td>${plane.latDeg}°</td>
-        <td>${rKm.toFixed(0)} km</td>
-        <td><span style="color:${plane.color}; opacity: 0.9">${speed.toFixed(0)} km/h</span></td>
+        <td>${speed.toFixed(0)} km/h</td>
       </tr>
     `;
   });
   elements.tableBody.innerHTML = html;
 
   renderPlaneOrbits();
-  updatePlanesPositions(currentTheta);
 }
 
 function loop(timestamp) {
-  if (!isAnimating) return;
-
   if (!startTime) startTime = timestamp;
   const elapsed = timestamp - startTime;
+  // Make visual rotation scale with T slider (24 h default = slow, 1h = very fast)
+  // Let's fix base duration to 8000ms for 24h
+  const BaseT = 24;
+  const currentT = parseFloat(elements.timeRange.value);
+  const visualDurationMs = (currentT / BaseT) * 8000;
 
-  // They complete one orbit visually every 6 seconds
-  const visualDurationMs = 6000;
-  currentTheta = (elapsed / visualDurationMs) * 2 * Math.PI;
-
+  const currentTheta = (elapsed / visualDurationMs) * 2 * Math.PI;
   updatePlanesPositions(currentTheta);
   requestAnimationFrame(loop);
 }
 
-function setupEventListeners() {
-  elements.timeRange.addEventListener('input', updateData);
-  elements.radiusInput.addEventListener('input', updateData);
+// --- EDUCATIONAL SCENARIO LOGIC ---
 
-  elements.toggleAnimBtn.addEventListener('click', () => {
-    isAnimating = !isAnimating;
-    if (isAnimating) {
-      elements.toggleAnimBtn.textContent = "Simülasyonu Durdur";
-      elements.toggleAnimBtn.classList.add("active");
-
-      // Calculate the start time so animation resumes smoothly from currentTheta
-      startTime = performance.now() - (currentTheta / (2 * Math.PI)) * 6000;
-      requestAnimationFrame(loop);
-    } else {
-      elements.toggleAnimBtn.textContent = "Simülasyonu Başlat";
-      elements.toggleAnimBtn.classList.remove("active");
-    }
-  });
-
-  elements.showAnswerBtn.addEventListener('click', () => {
-    elements.answerBox.classList.remove('hidden');
-    elements.showAnswerBtn.style.display = 'none'; // Optional: hide button once revealed
-    // Add small delay for CSS transition to trigger
-    setTimeout(() => {
-      elements.answerBox.style.opacity = 1;
-    }, 10);
-  });
+function goToStep(stepId) {
+  document.querySelectorAll('.scenario-step').forEach(el => el.classList.remove('active'));
+  document.getElementById('step-' + stepId).classList.add('active');
 }
 
-init();
+function showFeedback(stepNum, type, message) {
+  const fb = document.getElementById(`feedback-${stepNum}`);
+  fb.className = `feedback-box ${type}`;
+  fb.innerHTML = message;
+  fb.classList.remove('hidden');
+}
+
+// Step 1: Multiple choice
+function checkStep1(answer, btnObj) {
+  document.querySelectorAll('.step1-btn').forEach(b => {
+    b.classList.remove('selected', 'correct', 'wrong');
+  });
+
+  if (answer === 'L') {
+    btnObj.classList.add('correct');
+    showFeedback(1, 'success', '<strong>Tebrikler!</strong> Dünya\'nın gövdesi Ekvator\'da en kalındır (şişkinlik). Kapsadığı mesafe çok uzun olduğundan 1 turu aynı sürede (örneğin 24 saatte) tamamlayabilmesi için K ve M uçaklarından çok daha yüksek bir hızla gitmesi gerekir. L\'nin hız vektörünün ne kadar uzun olduğuna dikkat edin!');
+    document.getElementById('next-1').classList.remove('hidden');
+  } else {
+    btnObj.classList.add('wrong');
+    showFeedback(1, 'error', `Yanlış. ${answer} uçağı Ekvatorda değil. Ekvator yayının uzunluğunu ve uçağın bu yolu kat edebilmek için atması gereken deparı düşünün.`);
+  }
+}
+
+// Step 2: Fill in the blank
+function checkStep2(answer, btnObj) {
+  document.querySelectorAll('.step2-btn').forEach(b => {
+    b.classList.remove('selected', 'correct', 'wrong');
+  });
+  const blank = document.getElementById('blank-word');
+  blank.textContent = answer;
+  blank.classList.add('filled');
+
+  if (answer === 'sapmaya uğrar') {
+    btnObj.classList.add('correct');
+    showFeedback(2, 'success', '<strong>Doğru bir varsayım!</strong> Dünya her yerinde aynı hızla dönseydi rüzgârlar dümdüz eserdi. Ancak alttaki zemin hareketli ve çizgisel hızı sürekli değiştiği için rüzgârların yönü de adeta savrulur. (Bknz: Coriolis Etkisi)');
+    document.getElementById('next-2').classList.remove('hidden');
+  } else {
+    btnObj.classList.add('wrong');
+    blank.classList.remove('filled');
+    showFeedback(2, 'error', '<strong>Yanlış.</strong> Hava kütlesi dümdüz gitmek ister, ancak onun altında hızla hareket eden bir zemin (Dünya) vardır. Zemin ona göre hızlı veya yavaş kalırsa ne olur?');
+  }
+}
+
+// Step 3: Wind Animation
+function shootWind() {
+  const btn = document.getElementById('btn-shoot-wind');
+  btn.disabled = true;
+  btn.textContent = "💨 Rüzgâr Esiyor...";
+
+  const windPath = document.getElementById('wind-path');
+
+  // Create an arc representing the wind trajectory from North moving towards Equator
+  // Deviates to the right (South-West, which is screen-left) due to Coriolis in Northern Hemisphere
+  const startX = CX;
+  const startY = CY - R + 20; // Start at the North Pole region, inside the globe
+  // Target Equator but swept by rotation
+  const endX = CX - 120; // Deflected to the West (Left)
+  const endY = CY + 10;  // Reach the Equator region
+
+  // Bezier Curve: Control point starts straight down (South), then curves West
+  // By keeping control point's X equal to startX, initial direction is straight south.
+  // It curves "right" relative to its path, landing in the South-West!
+  windPath.setAttribute("d", `M ${startX} ${startY} Q ${CX} ${CY - 60} ${endX} ${endY}`);
+
+  // Reset dash array for drawing animation
+  const length = windPath.getTotalLength();
+  windPath.style.strokeDasharray = length;
+  windPath.style.strokeDashoffset = length;
+  windPath.style.opacity = "1";
+
+  // Trigger reflow
+  windPath.getBoundingClientRect();
+
+  windPath.style.transition = "stroke-dashoffset 2s ease-out";
+  windPath.style.strokeDashoffset = "0";
+
+  setTimeout(() => {
+    document.getElementById('feedback-3').classList.remove('hidden');
+    document.getElementById('next-3').classList.remove('hidden');
+    btn.textContent = "✅ Rüzgâr Sapması Doğrulandı";
+
+    // reset visual after a while to let them play again if needed
+    setTimeout(() => {
+      windPath.style.transition = "opacity 0.5s";
+      windPath.style.opacity = "0";
+      btn.disabled = false;
+      btn.textContent = "🌪 Rüzgârı Tekrar Fırlat";
+    }, 4000);
+  }, 2200);
+}
+
+// Step 4: True/False Conclusion
+function checkStep4(answer, btnObj) {
+  document.querySelectorAll('.step4-btn').forEach(b => {
+    b.classList.remove('selected', 'correct', 'wrong');
+  });
+
+  if (answer === 'Hayır') {
+    btnObj.classList.add('correct');
+    showFeedback(4, 'success', '<strong>Müthiş bir analiz!</strong> Eğer dinamik (hız kaynaklı) bu sapma faktörü olmasaydı rüzgârlar sıcaklığın izini takip ederek dümdüz gider, belirli enlemlerde yığılarak basınç kuşaklarını oluşturmazdı. Hava kütlelerini çemberlere hapseden yegane güç sapmadır.');
+    document.getElementById('next-4').classList.remove('hidden');
+  } else {
+    btnObj.classList.add('wrong');
+    showFeedback(4, 'error', '<strong>Tekrar düşünün.</strong> Sadece güneş ışınları ısınma/soğuma yaratır ama yığılma ve burgular hız sapmasının (Coriolis) marifetidir.');
+  }
+}
+
+function resetScenario() {
+  document.querySelectorAll('.feedback-box').forEach(fb => fb.classList.add('hidden'));
+  document.querySelectorAll('.next-step, [id^="next-"]').forEach(btn => btn.classList.add('hidden'));
+  document.querySelectorAll('.choice-btn, .chip').forEach(btn => btn.classList.remove('selected', 'correct', 'wrong'));
+
+  const blank = document.getElementById('blank-word');
+  if (blank) {
+    blank.textContent = "...";
+    blank.classList.remove('filled');
+  }
+
+  goToStep('intro');
+}
+
+// Initialize
+initSim();

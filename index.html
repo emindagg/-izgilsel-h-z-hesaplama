@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8">
-  <title>Çizgisel Hız & Paralel Çevresi Simülasyonu</title>
+  <title>Dünya'nın Dönüşü ve Atmosfer Dinamikleri - Simülasyon</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="dashboard">
     <header class="header">
-      <h1>Çizgisel Hız & Paralel Çevresi</h1>
-      <p>Dünya üzerinde aynı meridyenden aynı anda kalkıp turunu aynı sürede tamamlayan uçakların çizgisel hız karşılaştırması.</p>
+      <h1>Dünya'nın Dönüşü ve Atmosfer Dinamikleri</h1>
+      <p>Çizgisel hız farkının rüzgârlar ve iklim sistemi üzerindeki etkisini interaktif senaryo ile keşfedin.</p>
     </header>
-    
-    <div class="main-content">
-      <div class="panel viz-panel">
-        <svg id="globe" viewBox="0 0 500 500">
-           <defs>
-              <!-- Globe Body Gradient -->
+
+    <div class="main-content layout-scenario">
+      <div class="col-viz">
+        <div class="panel viz-panel">
+          <svg id="globe" viewBox="0 0 500 500" width="100%" height="auto">
+            <defs>
               <radialGradient id="globeGrad" cx="35%" cy="35%" r="65%">
-                 <stop offset="0%" stop-color="#27272a" />
-                 <stop offset="70%" stop-color="#09090b" />
-                 <stop offset="100%" stop-color="#000000" />
+                <stop offset="0%" stop-color="#27272a" />
+                <stop offset="70%" stop-color="#09090b" />
+                <stop offset="100%" stop-color="#000000" />
               </radialGradient>
               <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-                 <stop offset="80%" stop-color="#ffffff00" />
-                 <stop offset="100%" stop-color="#ffffff10" />
+                <stop offset="80%" stop-color="#ffffff00" />
+                <stop offset="100%" stop-color="#ffffff10" />
               </radialGradient>
-              <!-- Arrow head for vectors -->
               <marker id="arrowhead-K" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
                 <polygon points="0,0 5,2.5 0,5" fill="#a855f7" />
               </marker>
@@ -37,63 +38,175 @@
               <marker id="arrowhead-M" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
                 <polygon points="0,0 5,2.5 0,5" fill="#ec4899" />
               </marker>
+              <marker id="wind-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <polygon points="0,0 6,3 0,6" fill="#10b981" />
+              </marker>
               <filter id="glowBlur" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="3" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
-           </defs>
-           
-           <!-- Background Glow -->
-           <circle cx="250" cy="250" r="215" fill="url(#glowGrad)" />
-           <!-- Earth Sphere -->
-           <circle cx="250" cy="250" r="200" fill="url(#globeGrad)" stroke="#3f3f46" stroke-width="1.5"/>
-           
-           <!-- Background Static Lines -->
-           <g id="parallels-back"></g>
-           
-           <!-- Dynamic Orbits and Planes -->
-           <g id="planes"></g>
-        </svg>
-      </div>
+            </defs>
 
-      <div class="panel controls-panel">
-        <div class="card">
-          <h2>Simülasyon Kontrolleri</h2>
-          <div class="control-group">
-            <label>Tur Süresi (T): <span><span id="timeLabel">10</span> saat</span></label>
-            <input type="range" id="timeRange" min="1" max="24" step="1" value="10">
-          </div>
-          <div class="control-group">
-            <label>Dünya Yarıçapı (R): <span><span id="radiusLabel">6371</span> km</span></label>
-            <input type="range" id="radiusInput" value="6371" min="1000" max="10000" step="1">
-          </div>
-          <div class="actions">
-            <button id="toggleAnim" class="btn primary">Simülasyonu Başlat</button>
-            <button id="showAnswer" class="btn secondary">Cevabı Göster</button>
-          </div>
-          <div id="answer" class="answer-box hidden">
-             <strong>Doğru Sıralama: L &gt; M &gt; K (C şıkkı)</strong><br><br>
-             Ekvatora yaklaştıkça paralel çevresi büyür. Aynı sürede (T) tur tamamlamak için daha büyük çevrede daha yüksek çizgisel hız (V = 2πR·cos(φ) / T) gerekir. En uzun vektör Ekvator'daki (L) uçağına aittir.
-          </div>
+            <!-- Background Glow -->
+            <circle cx="250" cy="250" r="215" fill="url(#glowGrad)" />
+            <!-- Earth Sphere -->
+            <circle cx="250" cy="250" r="200" fill="url(#globeGrad)" stroke="#3f3f46" stroke-width="1.5" />
+
+            <!-- Static Lines -->
+            <g id="parallels-back"></g>
+
+            <!-- Wind Arc Generation -->
+            <path id="wind-path" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="0"
+              stroke-linecap="round" marker-end="url(#wind-arrow)" opacity="0" />
+
+            <!-- Planes -->
+            <g id="planes"></g>
+          </svg>
         </div>
 
-        <div class="card data-card">
-          <h2>Anlık Fiziksel Veriler</h2>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Uçak</th>
-                <th>Enlem</th>
-                <th>Dönüş Yarıçapı</th>
-                <th>Çizgisel Hız</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-          </table>
+        <div class="panel data-card compact-mt">
+          <div class="table-controls-row">
+            <table class="data-table flex-grow">
+              <thead>
+                <tr>
+                  <th>Uçak</th>
+                  <th>Enlem</th>
+                  <th>Çizgisel Hız</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+
+            <div class="simulation-tools">
+              <label>Süre Kontrolü (1 Tur): <span><span id="timeLabel">24</span> saat</span></label>
+              <input type="range" id="timeRange" min="1" max="48" step="1" value="24">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-scenario">
+        <div class="panel scenario-card">
+
+          <!-- Giriş -->
+          <div id="step-intro" class="scenario-step active">
+            <span class="badge intro-badge">Giriş Durumu</span>
+            <h2>Üç Pilotun Görevi</h2>
+            <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> (bizim simülasyonda 0°,
+              55°, 65°) enlemlerinde aynı anda havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
+              ederek (örneğin 24 saatte) tam bir tur atmak.</p>
+            <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilotun motorları neredeyse yanmak üzereyken, kutba yakın
+              pilot oldukça sakin bir uçuş gerçekleştirmiş. <strong>Peki Neden?</strong></p>
+            <button class="btn primary mt-4 w-full" onclick="goToStep(1)">Maceraya Başla</button>
+          </div>
+
+          <!-- Aşama 1 -->
+          <div id="step-1" class="scenario-step">
+            <span class="badge">Aşama 1 (SB1): Verileri Tanımlama</span>
+            <h2>Hız İhtiyacını Belirleme</h2>
+            <p>Yandaki simülasyonda M(-55° Güney), L(0° Ekvator) ve K(65° Kuzey) uçaklarını görüyorsunuz. Dünya ile
+              birlikte dönerek 1 turu aynı anda tamamlıyorlar.</p>
+            <p class="question">En uzun yörüngeye sahip olup, bu yolu aynı sürede bitirmek için en yüksek
+              <strong>çizgisel hıza</strong> (ok büyüklüğüne) ihtiyaç duyan uçak hangisidir?</p>
+
+            <div class="choice-group">
+              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('K', this)">K Uçağı (65°
+                Kuzey)</button>
+              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('L', this)">L Uçağı (0°
+                Ekvator)</button>
+              <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('M', this)">M Uçağı (55°
+                Güney)</button>
+            </div>
+
+            <div id="feedback-1" class="feedback-box hidden mt-4"></div>
+            <button id="next-1" class="btn primary mt-4 w-full hidden" onclick="goToStep(2)">Sonraki Aşama ➜</button>
+          </div>
+
+          <!-- Aşama 2 -->
+          <div id="step-2" class="scenario-step">
+            <span class="badge">Aşama 2 (SB2): Varsayımlarda Bulunma</span>
+            <h2>Hız Farkının Etkisi</h2>
+            <p>"Ekvator'da çizgisel hız çok yüksek, kutuplarda ise çok düşüktür."</p>
+            <p class="text-sm">Hedefine uçan/esen hava kütlelerini uçaklara benzetebiliriz. Boşluğa uygun olan kelimeyi
+              aşağıdaki butonlardan seçerek cümleyi tamamlayın:</p>
+
+            <div class="fill-in-box">
+              Hava kütleleri Dünya üzerindeki bu hız farkı nedeniyle hedeflerine dümdüz gitmek yerine <strong
+                id="blank-word" class="blank-slot">...</strong>
+            </div>
+
+            <div class="choice-group horizontal mt-4">
+              <button class="btn secondary chip step2-btn" onclick="checkStep2('hızlanır', this)">hızlanır</button>
+              <button class="btn secondary chip step2-btn" onclick="checkStep2('sapmaya uğrar', this)">sapmaya
+                uğrar</button>
+              <button class="btn secondary chip step2-btn" onclick="checkStep2('durur', this)">durur</button>
+            </div>
+
+            <div id="feedback-2" class="feedback-box hidden mt-4"></div>
+            <button id="next-2" class="btn primary mt-4 w-full hidden" onclick="goToStep(3)">Sonraki Aşama ➜</button>
+          </div>
+
+          <!-- Aşama 3 -->
+          <div id="step-3" class="scenario-step">
+            <span class="badge">Aşama 3 (SB3): Test Etme</span>
+            <h2>Coriolis (Sapma) Etkisi</h2>
+            <p>Varsayımınızı test edelim. Bir rüzgârın Kuzey Kutbu'ndan Ekvator'a doğru "dümdüz" esmeye çalıştığını
+              düşünün.</p>
+            <p>Aşağıdaki butona basarak rüzgârı fırlatın ve Dünya yüzeyindeki farklı dönüş hızlarının (çizgisel hız
+              farkı) rüzgârı nasıl saptırdığını simülasyon üzerinden izleyin.</p>
+
+            <button id="btn-shoot-wind" class="btn primary w-full" style="background:#10b981; color:#000;"
+              onclick="shootWind()">🌪 Rüzgâr Fırlat</button>
+
+            <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a
+              yaklaştıkça yerin hızı arttığı için (Ekvator hızla doğuya kaçarken), Kuzey'den inen hava kütlesi nispeten
+              geride kalarak batıya doğru (Kuzey Yarımküre'de hareket yönünün sağına) kavis çizer.</div>
+            <button id="next-3" class="btn primary mt-4 w-full hidden" onclick="goToStep(4)">Sonraki Aşama ➜</button>
+          </div>
+
+          <!-- Aşama 4 -->
+          <div id="step-4" class="scenario-step">
+            <span class="badge">Aşama 4 (SB4): Çıkarım</span>
+            <h2>Sonuç: Atmosferik Sistemler</h2>
+            <p>Uçakların deneyimlediği bu çizgisel hız farkı aynı zamanda Dünya'nın iklim motorudur. 30° ve 60°
+              enlemlerindeki dinamik basınç kuşakları ve sürekli rüzgârların yön değiştirmesi bu kuvvetle (Coriolis)
+              şekillenir.</p>
+            <p class="question">Sizce çizgisel hız farkı (Coriolis sapması) olmasaydı bu dinamik basınç kuşakları yön
+              değiştirerek oluşur muydu?</p>
+
+            <div class="choice-group">
+              <button class="btn secondary choice-btn step4-btn" onclick="checkStep4('Evet', this)">Evet, Güneş ışınları
+                yeterliydi.</button>
+              <button class="btn secondary choice-btn step4-btn" onclick="checkStep4('Hayır', this)">Hayır, Dinamik
+                (sapma/hız) faktörler şarttır.</button>
+            </div>
+
+            <div id="feedback-4" class="feedback-box hidden mt-4"></div>
+            <button id="next-4" class="btn primary mt-4 w-full hidden" onclick="goToStep('outro')">Sonucu Gör ➜</button>
+          </div>
+
+          <!-- Outro -->
+          <div id="step-outro" class="scenario-step">
+            <span class="badge success">Görev Tamamlandı 🚀</span>
+            <h2>Kapanış ve Yansıtma</h2>
+            <div class="yansitma-box mt-4">
+              <p><strong>Yansıtma:</strong> Eğer Dünya'nın dönüş hızı her enlemde aynı olsaydı (Dünya tıpkı bir silindir
+                gibi dönseydi), iklim sistemindeki "Alizeler" veya "Batı Rüzgârları" yine bugünkü gibi yön değiştirerek
+                eser miydi?</p>
+              <p class="mt-2 text-sm opacity-80">(Cevap: Hayır, atmosfer tıpkı bir kutu gibi birlikte hareket ederdi.)
+              </p>
+            </div>
+            <p class="mt-4 text-muted text-sm border-t pt-4"><strong>Değerlendirme:</strong> Uçakların hız farkından
+              yola çıkarak devasa bir atmosferik sistemi çözümlediniz! Dünya'nın küresel şekli ve dönüşü, sadece zamanı
+              değil havayı, akıntıları ve iklimi de büyük bir haritayla yönetiyor.</p>
+            <button class="btn secondary mt-4 w-full" onclick="resetScenario()">Yeniden Başla</button>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>
