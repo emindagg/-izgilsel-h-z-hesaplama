@@ -235,6 +235,7 @@ function checkStep1(answer, btnObj) {
   } else {
     btnObj.classList.add('wrong');
     showFeedback(1, 'error', `Yanlış. ${answer} uçağı Ekvatorda değil. Ekvator yayının uzunluğunu ve uçağın bu yolu kat edebilmek için atması gereken deparı düşünün.`);
+    document.getElementById('next-1').classList.add('hidden');
   }
 }
 
@@ -255,6 +256,7 @@ function checkStep2(answer, btnObj) {
     btnObj.classList.add('wrong');
     blank.classList.remove('filled');
     showFeedback(2, 'error', '<strong>Yanlış.</strong> Hava kütlesi dümdüz gitmek ister, ancak onun altında hızla hareket eden bir zemin (Dünya) vardır. Zemin ona göre hızlı veya yavaş kalırsa ne olur?');
+    document.getElementById('next-2').classList.add('hidden');
   }
 }
 
@@ -326,6 +328,7 @@ function checkStep4(answer, btnObj) {
   } else {
     btnObj.classList.add('wrong');
     showFeedback(4, 'error', '<strong>Tekrar düşünün.</strong> Sadece güneş ışınları ısınma/soğuma yaratır ama yığılma ve burgular hız sapmasının (Coriolis) marifetidir.');
+    document.getElementById('next-4').classList.add('hidden');
   }
 }
 

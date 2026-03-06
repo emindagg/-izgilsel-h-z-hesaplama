@@ -297,8 +297,8 @@ body {
   color: #fca5a5;
 }
 
-.feedback-box.hidden {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 .yansitma-box {
