@@ -210,6 +210,13 @@ function loop(timestamp) {
 
 // --- EDUCATIONAL SCENARIO LOGIC ---
 
+function startActivity() {
+  const introScreen = document.getElementById('intro-screen');
+  if (introScreen) {
+    introScreen.classList.add('hidden-intro');
+  }
+}
+
 function goToStep(stepId) {
   document.querySelectorAll('.scenario-step').forEach(el => el.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');

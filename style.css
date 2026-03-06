@@ -432,6 +432,95 @@ input[type=range]:focus {
   border-bottom: none;
 }
 
+/* INTRO SCREEN */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.intro-screen.hidden-intro {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  max-width: 650px;
+  padding: 3.5rem;
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-badge {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.8rem;
+}
+
+.intro-outcome {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.intro-instruction {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.intro-btn {
+  font-size: 1.05rem;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* BLINK ANIMATION FOR WIND ARROW */
 @keyframes blink-opacity {
 
