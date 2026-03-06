@@ -15,6 +15,9 @@ const elements = {
 };
 
 let startTime = 0;
+let isAnimating = false;
+let currentTheta = Math.PI / 4;
+let savedTheta = Math.PI / 4;
 const CX = 250, CY = 250, R = 200, Rkm = 6371;
 const TILT = 0.35;
 
@@ -23,7 +26,7 @@ function initSim() {
   drawStaticParallels();
   updateData();
   elements.timeRange.addEventListener('input', updateData);
-  requestAnimationFrame(loop);
+  updatePlanesPositions(currentTheta);
 }
 
 function drawMeridians() {
@@ -192,9 +195,13 @@ function updateData() {
   elements.tableBody.innerHTML = html;
 
   renderPlaneOrbits();
+  if (typeof updatePlanesPositions === 'function') {
+    updatePlanesPositions(currentTheta);
+  }
 }
 
 function loop(timestamp) {
+  if (!isAnimating) return;
   if (!startTime) startTime = timestamp;
   const elapsed = timestamp - startTime;
   // Make visual rotation scale with T slider (24 h default = slow, 1h = very fast)
@@ -203,9 +210,31 @@ function loop(timestamp) {
   const currentT = parseFloat(elements.timeRange.value);
   const visualDurationMs = (currentT / BaseT) * 8000;
 
-  const currentTheta = (elapsed / visualDurationMs) * 2 * Math.PI;
+  const deltaTheta = (elapsed / visualDurationMs) * 2 * Math.PI;
+  currentTheta = savedTheta + deltaTheta;
   updatePlanesPositions(currentTheta);
-  requestAnimationFrame(loop);
+
+  if (isAnimating) {
+    requestAnimationFrame(loop);
+  }
+}
+
+function toggleSim() {
+  isAnimating = !isAnimating;
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+
+  if (isAnimating) {
+    iconPlay.classList.add('hidden');
+    iconPause.classList.remove('hidden');
+    startTime = performance.now(); // reset start time to prevent jumps
+    requestAnimationFrame(loop);
+  } else {
+    iconPause.classList.add('hidden');
+    iconPlay.classList.remove('hidden');
+    savedTheta = currentTheta; // save the current theta so we resume from here
+    startTime = 0;
+  }
 }
 
 // --- EDUCATIONAL SCENARIO LOGIC ---
@@ -380,3 +409,27 @@ function resetScenario() {
 
 // Initialize
 initSim();
+
+function toggleFullScreen() {
+  const doc = window.document;
+  const docEl = doc.documentElement;
+  const iconFullScreen = document.getElementById('icon-fullscreen');
+  const iconExitFullScreen = document.getElementById('icon-exit-fullscreen');
+
+  const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    if (requestFullScreen) {
+      requestFullScreen.call(docEl);
+      if (iconFullScreen) iconFullScreen.classList.add('hidden');
+      if (iconExitFullScreen) iconExitFullScreen.classList.remove('hidden');
+    }
+  } else {
+    if (cancelFullScreen) {
+      cancelFullScreen.call(doc);
+      if (iconExitFullScreen) iconExitFullScreen.classList.add('hidden');
+      if (iconFullScreen) iconFullScreen.classList.remove('hidden');
+    }
+  }
+}

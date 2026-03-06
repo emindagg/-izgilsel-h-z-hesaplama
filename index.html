@@ -23,14 +23,32 @@
   </div>
 
   <div class="dashboard">
-    <header class="header">
-      <h1>Dünya'nın Dönüşü ve Atmosfer Dinamikleri</h1>
-      <p>Çizgisel hız farkının rüzgârlar ve iklim sistemi üzerindeki etkisini interaktif senaryo ile keşfedin.</p>
-    </header>
+    <button id="fullscreenBtn" class="fullscreen-btn" onclick="toggleFullScreen()" title="Tam Ekran"
+      aria-label="Tam Ekran">
+      <svg id="icon-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="icon">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+      </svg>
+      <svg id="icon-exit-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="icon hidden">
+        <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+      </svg>
+    </button>
 
     <div class="main-content layout-scenario">
       <div class="col-viz">
         <div class="panel viz-panel">
+          <button id="playPauseBtn" class="play-pause-btn" aria-label="Simülasyonu Oynat/Durdur" onclick="toggleSim()">
+            <svg id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" class="icon">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg id="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" class="icon hidden">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+          </button>
           <svg id="globe" viewBox="0 0 500 500" width="100%">
             <defs>
               <radialGradient id="globeGrad" cx="35%" cy="35%" r="65%">
@@ -107,7 +125,7 @@
             <h2>Üç Pilotun Görevi</h2>
             <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> enlemlerinde aynı anda
               havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
-              ederek (örneğin 24 saatte) tam bir tur atmak.</p>
+              ederek tam bir tur atmak.</p>
             <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilotun motorları neredeyse yanmak üzereyken, kutba yakın
               pilot oldukça sakin bir uçuş gerçekleştirmiş. <strong>Peki Neden?</strong></p>
             <button class="btn primary mt-4 w-full" onclick="goToStep(1)">Maceraya Başla</button>

@@ -32,27 +32,41 @@ body {
   width: 100%;
   max-width: 1200px;
   padding: 2rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.header h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.04em;
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.fullscreen-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(24, 24, 27, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.header p {
-  color: var(--muted);
-  margin: 0;
-  font-size: 1rem;
-  max-width: 800px;
-  line-height: 1.5;
+.fullscreen-btn:hover {
+  background: rgba(39, 39, 42, 0.8);
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.fullscreen-btn .icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* LAYOUT: SCENARIO (2 COLUMNS) */
@@ -76,6 +90,37 @@ body {
   padding: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.play-pause-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(24, 24, 27, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.play-pause-btn:hover {
+  background: rgba(39, 39, 42, 0.8);
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.play-pause-btn .icon {
+  width: 20px;
+  height: 20px;
 }
 
 #globe {
