@@ -39,9 +39,9 @@ body {
 }
 
 .fullscreen-btn {
-  position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
+  align-self: flex-end;
+  margin-bottom: -0.5rem;
+  flex-shrink: 0;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -95,7 +95,7 @@ body {
 .play-pause-btn {
   position: absolute;
   top: 1.25rem;
-  right: 1.25rem;
+  left: 1.25rem;
   width: 44px;
   height: 44px;
   border-radius: 50%;
