@@ -16,25 +16,25 @@
       <div class="intro-badge">Öğrenme Çıktısı</div>
       <p class="intro-outcome">COĞ.9.3.2. İklim sisteminin bileşen ve değişkenlerini çözümleyebilme</p>
       <p class="intro-instruction">Bu etkileşimli senaryoda, farklı enlemlerdeki pilotların uçuş hızları üzerinden
-        Dünya'nın şeklini inceleyecek ve Coriolis (Sapma) etkisinin iklim sistemini nasıl harekete geçirdiğini
+        Dünya'nın küresel şeklini inceleyecek ve Coriolis (Sapma) etkisinin iklim sistemini nasıl harekete geçirdiğini
         adım adım keşfedeceksiniz.</p>
       <button class="btn primary intro-btn" onclick="startActivity()">Etkinliğe Başla</button>
     </div>
   </div>
 
-  <div class="dashboard">
-    <button id="fullscreenBtn" class="fullscreen-btn" onclick="toggleFullScreen()" title="Tam Ekran"
-      aria-label="Tam Ekran">
-      <svg id="icon-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-      </svg>
-      <svg id="icon-exit-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" class="icon hidden">
-        <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
-      </svg>
-    </button>
+  <button id="fullscreenBtn" class="fullscreen-btn" onclick="toggleFullScreen()" title="Tam Ekran"
+    aria-label="Tam Ekran">
+    <svg id="icon-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" class="icon">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+    </svg>
+    <svg id="icon-exit-fullscreen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" class="icon hidden">
+      <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+    </svg>
+  </button>
 
+  <div class="dashboard">
     <div class="main-content layout-scenario">
       <div class="col-viz">
         <div class="panel viz-panel">
@@ -126,8 +126,9 @@
             <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> enlemlerinde aynı anda
               havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
               ederek tam bir tur atmak.</p>
-            <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilotun motorları neredeyse yanmak üzereyken, kutba yakın
-              pilot oldukça sakin bir uçuş gerçekleştirmiş. <strong>Peki Neden?</strong></p>
+            <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilot uçak günlüğüne tam <strong>40.075 km</strong>
+              uçtuğunu not ederken, kutba yakın pilot yalnızca yaklaşık <strong>6.950 km</strong> uçmuş. Aynı süre, çok
+              farklı mesafeler. <strong>Peki bu hız farkının bir sebebi var mı?</strong></p>
             <button class="btn primary mt-4 w-full" onclick="goToStep(1)">Maceraya Başla</button>
           </div>
 
