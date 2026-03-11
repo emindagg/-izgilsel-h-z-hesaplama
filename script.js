@@ -266,11 +266,11 @@ function checkStep1(answer, btnObj) {
 
   if (answer === 'L') {
     btnObj.classList.add('correct');
-    showFeedback(1, 'success', '<strong>Tebrikler!</strong> Dünya\'nın gövdesi Ekvator\'da en kalındır (şişkinlik). Kapsadığı mesafe çok uzun olduğundan 1 turu aynı sürede (örneğin 24 saatte) tamamlayabilmesi için K ve M uçaklarından çok daha yüksek bir hızla gitmesi gerekir. L\'nin hız vektörünün ne kadar uzun olduğuna dikkat edin!');
+    showFeedback(1, 'success', '<strong>Tebrikler!</strong> Dünya\'nın gövdesi Ekvator\'da en kalındır (şişkinlik). Kapsadığı mesafe çok uzun olduğundan 1 turu aynı sürede (örneğin 24 saatte) tamamlayabilmesi için K ve M uçaklarından çok daha yüksek bir hızla gitmesi gerekir. L\'nin hızının ne kadar yüksek olduğuna dikkat edin!');
     document.getElementById('next-1').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
-    showFeedback(1, 'error', `Yanlış. ${answer} uçağı Ekvatorda değil. Ekvator yayının uzunluğunu ve uçağın bu yolu kat edebilmek için atması gereken deparı düşünün.`);
+    showFeedback(1, 'error', `Yanlış. ${answer} uçağı Ekvator'da değil. Ekvator yayının uzunluğunu ve uçağın aynı sürede bu yolu bitirebilmek için sahip olması gereken yüksek hızı düşünün.`);
     document.getElementById('next-1').classList.add('hidden');
   }
 }
@@ -300,7 +300,7 @@ function checkStep2(answer, btnObj) {
 function shootWind() {
   const btn = document.getElementById('btn-shoot-wind');
   btn.disabled = true;
-  btn.textContent = "💨 Rüzgâr Esiyor...";
+  btn.textContent = "💨 Rüzgar Başlatıldı...";
 
   const windPath = document.getElementById('wind-path');
 
@@ -346,7 +346,7 @@ function shootWind() {
     // reset visual after a while to let them play again if needed
     setTimeout(() => {
       btn.disabled = false;
-      btn.textContent = "🌪 Rüzgârı Tekrar Fırlat";
+      btn.textContent = "🌪 Rüzgarı Tekrar Başlat";
     }, 1500); // Allow them to click again sooner, arrow stays blinking
   }, 2100);
 }

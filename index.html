@@ -126,20 +126,22 @@
             <p>Üç pilot; <strong>Ekvator</strong>, <strong>45°</strong> ve <strong>80°</strong> enlemlerinde aynı anda
               havalanıyor. Görevleri, Dünya'nın kendi etrafındaki bir dönüşüne eşlik
               ederek tam bir tur atmak.</p>
-            <p>Meridyenlerine geri döndüklerinde, Ekvator'daki pilot uçak günlüğüne tam <strong>40.075 km</strong>
-              uçtuğunu not ederken, kutba yakın pilot yalnızca yaklaşık <strong>6.950 km</strong> uçmuş. Aynı süre, çok
-              farklı mesafeler. <strong>Peki bu hız farkının bir sebebi var mı?</strong></p>
+            <p>Meridyenlerine geri döndüklerinde; Ekvator'daki pilot uçak günlüğüne tam <strong>40.075 km</strong>, 45°
+              enlemindeki pilot <strong>28.300 km</strong> uçtuğunu not ederken, 80° enlemindeki pilot ise yaklaşık
+              <strong>6.950 km</strong> uçmuş. Aynı süre, çok farklı mesafeler. <strong>Peki bu hız farkının bir sebebi
+                var mı?</strong>
+            </p>
             <button class="btn primary mt-4 w-full" onclick="goToStep(1)">Maceraya Başla</button>
           </div>
 
           <!-- Aşama 1 -->
           <div id="step-1" class="scenario-step">
-            <span class="badge">Aşama 1 (SB1): Verileri Tanımlama</span>
+            <span class="badge">Aşama 1</span>
             <h2>Hız İhtiyacını Belirleme</h2>
-            <p>Yandaki simülasyonda M(45° Güney), L(0° Ekvator) ve K(80° Kuzey) uçaklarını görüyorsunuz. Dünya ile
+            <p>Yandaki simülasyonda K(80° Kuzey), L(0° Ekvator) ve M(45° Güney) uçaklarını görüyorsunuz. Dünya ile
               birlikte dönerek 1 turu aynı anda tamamlıyorlar.</p>
             <p class="question">En uzun yörüngeye sahip olup, bu yolu aynı sürede bitirmek için en yüksek
-              <strong>çizgisel hıza</strong> (ok büyüklüğüne) ihtiyaç duyan uçak hangisidir?
+              <strong>hıza</strong> ihtiyaç duyan uçak hangisidir?
             </p>
 
             <div class="choice-group">
@@ -157,7 +159,7 @@
 
           <!-- Aşama 2 -->
           <div id="step-2" class="scenario-step">
-            <span class="badge">Aşama 2 (SB2): Varsayımlarda Bulunma</span>
+            <span class="badge">Aşama 2</span>
             <h2>Hız Farkının Etkisi</h2>
             <p>"Ekvator'da çizgisel hız çok yüksek, kutuplarda ise çok düşüktür."</p>
             <p class="text-sm">Hedefine uçan/esen hava kütlelerini uçaklara benzetebiliriz. Boşluğa uygun olan kelimeyi
@@ -181,7 +183,7 @@
 
           <!-- Aşama 3 -->
           <div id="step-3" class="scenario-step">
-            <span class="badge">Aşama 3 (SB3): Test Etme</span>
+            <span class="badge">Aşama 3</span>
             <h2>Coriolis (Sapma) Etkisi</h2>
             <p>Varsayımınızı test edelim. Bir rüzgârın Kuzey Kutbu'ndan Ekvator'a doğru "dümdüz" esmeye çalıştığını
               düşünün.</p>
@@ -189,7 +191,7 @@
               farkı) rüzgârı nasıl saptırdığını simülasyon üzerinden izleyin.</p>
 
             <button id="btn-shoot-wind" class="btn primary w-full" style="background:#10b981; color:#000;"
-              onclick="shootWind()">🌪 Rüzgâr Fırlat</button>
+              onclick="shootWind()">🌪 Rüzgarı Başlat</button>
 
             <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a
               yaklaştıkça yerin hızı arttığı için (Ekvator hızla doğuya kaçarken), Kuzey'den inen hava kütlesi nispeten
@@ -199,7 +201,7 @@
 
           <!-- Aşama 4 -->
           <div id="step-4" class="scenario-step">
-            <span class="badge">Aşama 4 (SB4): Çıkarım</span>
+            <span class="badge">Aşama 4</span>
             <h2>Sonuç: Atmosferik Sistemler</h2>
             <p>Uçakların deneyimlediği bu çizgisel hız farkı aynı zamanda Dünya'nın iklim motorudur. 30° ve 60°
               enlemlerindeki dinamik basınç kuşakları ve sürekli rüzgârların yön değiştirmesi bu kuvvetle (Coriolis)
