@@ -40,8 +40,8 @@ function drawMeridians() {
     path.setAttribute("rx", Math.abs(rx));
     path.setAttribute("ry", R);
     path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "#27272a");
-    path.setAttribute("stroke-width", "0.5");
+    path.setAttribute("stroke", "#52525b");
+    path.setAttribute("stroke-width", "1");
     g.appendChild(path);
   }
   elements.parallelsBack.appendChild(g);
@@ -60,8 +60,8 @@ function drawStaticParallels() {
     ellipse.setAttribute("rx", rx);
     ellipse.setAttribute("ry", ry);
     ellipse.setAttribute("fill", "none");
-    ellipse.setAttribute("stroke", "#27272a");
-    ellipse.setAttribute("stroke-width", "0.5");
+    ellipse.setAttribute("stroke", "#52525b");
+    ellipse.setAttribute("stroke-width", "1");
     elements.parallelsBack.appendChild(ellipse);
   }
 }
