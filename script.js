@@ -2,7 +2,7 @@
 const planesData = [
   { id: "K", latDeg: 80, color: "#a855f7" },
   { id: "L", latDeg: 0, color: "#3b82f6" },
-  { id: "M", latDeg: -45, color: "#ec4899" }
+  { id: "M", latDeg: -45, color: "#62db96df" }
 ];
 
 const elements = {
@@ -217,7 +217,8 @@ function updateData() {
   elements.timeLabel.textContent = T;
 
   let html = "";
-  const sortedPlanes = [...planesData].sort((a, b) => Math.abs(a.latDeg) - Math.abs(b.latDeg));
+  // Sort by ID: K, L, M
+  const sortedPlanes = [...planesData].sort((a, b) => a.id.localeCompare(b.id));
 
   sortedPlanes.forEach(plane => {
     const radius = Math.cos(Math.abs(plane.latDeg) * Math.PI / 180);
@@ -229,10 +230,20 @@ function updateData() {
       ? `${speed.toFixed(0)} km/h` 
       : '---';
 
+    // Format latitude with K (Kuzey) or G (Güney) suffix
+    let latDisplay;
+    if (plane.latDeg === 0) {
+      latDisplay = '0°';
+    } else if (plane.latDeg > 0) {
+      latDisplay = `${plane.latDeg}° K`;
+    } else {
+      latDisplay = `${Math.abs(plane.latDeg)}° G`;
+    }
+
     html += `
       <tr>
         <td><strong style="color:${plane.color}">${plane.id}</strong></td>
-        <td>${plane.latDeg}°</td>
+        <td>${latDisplay}</td>
         <td>${speedDisplay}</td>
       </tr>
     `;
