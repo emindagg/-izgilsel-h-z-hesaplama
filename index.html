@@ -144,7 +144,9 @@
               <strong>hıza</strong> ihtiyaç duyan uçak hangisidir?
             </p>
 
-            <div class="choice-group">
+            <button id="step1-trigger" class="btn primary mt-4 w-full" onclick="activateStep1Challenge()">Uçakları Hareket Ettir</button>
+
+            <div id="step1-choices" class="choice-group hidden mt-4">
               <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('K', this)">K Uçağı (80°
                 Kuzey)</button>
               <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('L', this)">L Uçağı (0°
@@ -258,7 +260,9 @@
       </div>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="browser-handlers.js?v=20260317-2"></script>
+  <script src="step1-state.js?v=20260317-2"></script>
+  <script src="script.js?v=20260317-2"></script>
 </body>
 
 </html>

@@ -20,6 +20,44 @@ let currentTheta = Math.PI / 4;
 let savedTheta = Math.PI / 4;
 const CX = 250, CY = 250, R = 200, Rkm = 6371;
 const TILT = 0.35;
+const defaultStep1StateApi = {
+  createInitialStep1State: () => ({
+    hasActivated: false,
+    choicesVisible: false,
+    triggerHidden: false,
+    triggerDisabled: false,
+    shouldStartAnimation: false
+  }),
+  activateStep1: (currentState) => {
+    const state = currentState || defaultStep1StateApi.createInitialStep1State();
+
+    if (state.hasActivated) {
+      return {
+        ...state,
+        shouldStartAnimation: false
+      };
+    }
+
+    return {
+      hasActivated: true,
+      choicesVisible: true,
+      triggerHidden: true,
+      triggerDisabled: true,
+      shouldStartAnimation: true
+    };
+  }
+};
+const step1StateApi = window.Step1State || defaultStep1StateApi;
+const browserHandlersApi = window.BrowserHandlers || {
+  registerWindowHandlers: (target, handlers) => {
+    Object.entries(handlers).forEach(([name, handler]) => {
+      target[name] = handler;
+    });
+
+    return target;
+  }
+};
+let step1UiState = step1StateApi.createInitialStep1State();
 
 function initSim() {
   drawMeridians();
@@ -27,6 +65,8 @@ function initSim() {
   updateData();
   elements.timeRange.addEventListener('input', updateData);
   updatePlanesPositions(currentTheta);
+  resetStep1Challenge();
+  updateSimulationControlIcons();
 }
 
 function drawMeridians() {
@@ -219,22 +259,49 @@ function loop(timestamp) {
   }
 }
 
-function toggleSim() {
-  isAnimating = !isAnimating;
+function updateSimulationControlIcons() {
   const iconPlay = document.getElementById('icon-play');
   const iconPause = document.getElementById('icon-pause');
 
-  if (isAnimating) {
-    iconPlay.classList.add('hidden');
-    iconPause.classList.remove('hidden');
-    startTime = performance.now(); // reset start time to prevent jumps
-    requestAnimationFrame(loop);
-  } else {
-    iconPause.classList.add('hidden');
-    iconPlay.classList.remove('hidden');
-    savedTheta = currentTheta; // save the current theta so we resume from here
-    startTime = 0;
+  if (!iconPlay || !iconPause) {
+    return;
   }
+
+  iconPlay.classList.toggle('hidden', isAnimating);
+  iconPause.classList.toggle('hidden', !isAnimating);
+}
+
+function startSim() {
+  if (isAnimating) {
+    return false;
+  }
+
+  isAnimating = true;
+  updateSimulationControlIcons();
+  startTime = performance.now();
+  requestAnimationFrame(loop);
+  return true;
+}
+
+function stopSim() {
+  if (!isAnimating) {
+    return false;
+  }
+
+  isAnimating = false;
+  savedTheta = currentTheta;
+  startTime = 0;
+  updateSimulationControlIcons();
+  return true;
+}
+
+function toggleSim() {
+  if (isAnimating) {
+    stopSim();
+    return;
+  }
+
+  startSim();
 }
 
 // --- EDUCATIONAL SCENARIO LOGIC ---
@@ -249,6 +316,10 @@ function startActivity() {
 function goToStep(stepId) {
   document.querySelectorAll('.scenario-step').forEach(el => el.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
+
+  if (String(stepId) === '1') {
+    applyStep1UiState();
+  }
 }
 
 function showFeedback(stepNum, type, message) {
@@ -256,6 +327,38 @@ function showFeedback(stepNum, type, message) {
   fb.className = `feedback-box ${type}`;
   fb.innerHTML = message;
   fb.classList.remove('hidden');
+}
+
+function applyStep1UiState() {
+  const triggerButton = document.getElementById('step1-trigger');
+  const choicesGroup = document.getElementById('step1-choices');
+
+  if (triggerButton) {
+    triggerButton.disabled = step1UiState.triggerDisabled;
+    triggerButton.classList.toggle('hidden', step1UiState.triggerHidden);
+  }
+
+  if (choicesGroup) {
+    choicesGroup.classList.toggle('hidden', !step1UiState.choicesVisible);
+  }
+}
+
+function activateStep1Challenge() {
+  step1UiState = step1StateApi.activateStep1(step1UiState);
+  applyStep1UiState();
+
+  if (step1UiState.shouldStartAnimation) {
+    startSim();
+    step1UiState = {
+      ...step1UiState,
+      shouldStartAnimation: false
+    };
+  }
+}
+
+function resetStep1Challenge() {
+  step1UiState = step1StateApi.createInitialStep1State();
+  applyStep1UiState();
 }
 
 // Step 1: Multiple choice
@@ -404,8 +507,24 @@ function resetScenario() {
     blank.classList.remove('filled');
   }
 
+  resetStep1Challenge();
+  stopSim();
   goToStep('intro');
 }
+
+browserHandlersApi.registerWindowHandlers(window, {
+  startActivity,
+  toggleFullScreen,
+  toggleSim,
+  goToStep,
+  checkStep1,
+  checkStep2,
+  shootWind,
+  checkStep4,
+  checkStepOutro,
+  resetScenario,
+  activateStep1Challenge
+});
 
 // Initialize
 initSim();
