@@ -390,7 +390,7 @@ function checkStep1(answer, btnObj) {
     step1UiState.showSpeeds = true;
     updateData();
     
-    showFeedback(1, 'success', '<strong>Tebrikler!</strong> Dünya\'nın gövdesi Ekvator\'da en kalındır (şişkinlik). Kapsadığı mesafe çok uzun olduğundan 1 turu aynı sürede (örneğin 24 saatte) tamamlayabilmesi için K ve M uçaklarından çok daha yüksek bir hızla gitmesi gerekir. L\'nin hızının ne kadar yüksek olduğuna dikkat edin!');
+    showFeedback(1, 'success', '<strong>Doğru.</strong> Dünya\'nın şekli nedeniyle 0° enlemi, en geniş çevre uzunluğuna sahiptir. Tüm enlemlerde bir tam dönüş 24 saatte tamamlandığı için (açısal hızın eşitliği), Ekvator üzerindeki L noktasının katetmesi gereken mesafe daha fazladır. Bu durum, L uçağının çizgisel hızının K ve M uçaklarına göre daha yüksek olmasını zorunlu kılar.');
     document.getElementById('next-1').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
