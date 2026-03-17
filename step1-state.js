@@ -5,7 +5,8 @@
       choicesVisible: false,
       triggerHidden: false,
       triggerDisabled: false,
-      shouldStartAnimation: false
+      shouldStartAnimation: false,
+      showSpeeds: false
     };
   }
 
@@ -24,7 +25,8 @@
       choicesVisible: true,
       triggerHidden: true,
       triggerDisabled: true,
-      shouldStartAnimation: true
+      shouldStartAnimation: true,
+      showSpeeds: false
     };
   }
 

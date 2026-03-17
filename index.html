@@ -138,7 +138,7 @@
           <div id="step-1" class="scenario-step">
             <span class="badge">Aşama 1</span>
             <h2>Hız İhtiyacını Belirleme</h2>
-            <p>Yandaki simülasyonda K(80° Kuzey), L(0° Ekvator) ve M(45° Güney) uçaklarını görüyorsunuz. Dünya ile
+            <p>Yandaki simülasyonda 80° kuzey enleminde K, 0° Ekvator'da L, 45° güney enleminde M uçaklarını görüyorsunuz. Dünya ile
               birlikte dönerek 1 turu aynı anda tamamlıyorlar.</p>
             <p class="question">En uzun yörüngeye sahip olup, bu yolu aynı sürede bitirmek için en yüksek
               <strong>hıza</strong> ihtiyaç duyan uçak hangisidir?
@@ -163,7 +163,7 @@
           <div id="step-2" class="scenario-step">
             <span class="badge">Aşama 2</span>
             <h2>Hız Farkının Etkisi</h2>
-            <p>"Ekvator'da çizgisel hız çok yüksek, kutuplarda ise çok düşüktür."</p>
+            <p>Ekvator'dan kutuplara gidildikçe çizgisel hız azalır.</p>
             <p class="text-sm">Hedefine uçan/esen hava kütlelerini uçaklara benzetebiliriz. Boşluğa uygun olan kelimeyi
               aşağıdaki butonlardan seçerek cümleyi tamamlayın:</p>
 
@@ -195,9 +195,7 @@
             <button id="btn-shoot-wind" class="btn primary w-full" style="background:#10b981; color:#000;"
               onclick="shootWind()">🌪 Rüzgarı Başlat</button>
 
-            <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a
-              yaklaştıkça yerin hızı arttığı için (Ekvator hızla doğuya kaçarken), Kuzey'den inen hava kütlesi nispeten
-              geride kalarak batıya doğru (Kuzey Yarımküre'de hareket yönünün sağına) kavis çizer.</div>
+            <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a yaklaştıkça yerkürenin dönüş hızı arttığı için, Kuzey'den güneye inen hava kütlesi altındaki zeminin hızına kıyasla daha yavaş kalır. Bu hız farkı nedeniyle hava kütlesi Doğu'ya doğru ilerleyen zeminin gerisinde kalarak Batı'ya doğru (Kuzey Yarımküre'de hareket yönünün sağına) kavis çizer.</div>
             <button id="next-3" class="btn primary mt-4 w-full hidden" onclick="goToStep(4)">Sonraki Aşama ➜</button>
           </div>
 
@@ -205,9 +203,7 @@
           <div id="step-4" class="scenario-step">
             <span class="badge">Aşama 4</span>
             <h2>Sonuç: Atmosferik Sistemler</h2>
-            <p>Uçakların deneyimlediği bu çizgisel hız farkı aynı zamanda Dünya'nın iklim motorudur. 30° ve 60°
-              enlemlerindeki dinamik basınç kuşakları ve sürekli rüzgârların yön değiştirmesi bu kuvvetle (Coriolis)
-              şekillenir.</p>
+            <p>Uçakların deneyimlediği bu çizgisel hız farkı, 30° ve 60° enlemlerindeki dinamik basınç kuşaklarının ve sürekli rüzgârların yön değiştirmesinin nedenidir. Coriolis etkisiyle oluşan bu sistemler küresel atmosfer sirkülasyonunun temelini oluşturur.</p>
             <p class="question">Sizce çizgisel hız farkı (Coriolis sapması) olmasaydı bu dinamik basınç kuşakları yön
               değiştirerek oluşur muydu?</p>
 
@@ -241,10 +237,7 @@
             </div>
 
             <div id="final-evaluation" class="hidden mt-4 text-muted text-sm border-t pt-4">
-              <p><strong>Değerlendirme:</strong> Uçakların hız farkından
-                yola çıkarak devasa bir atmosferik sistemi çözümlediniz! Dünya'nın küresel şekli ve dönüşü, sadece
-                zamanı
-                değil havayı, akıntıları ve iklimi de büyük bir haritayla yönetiyor.</p>
+              <p><strong>Değerlendirme:</strong> Uçakların hız farkı üzerinden küresel atmosfer sistemini analiz ettiniz. Dünya'nın şekli ve dönüşü; hava hareketlerini, okyanus akıntılarını ve iklimi belirleyen temel fiziksel dinamiklerdir.</p>
 
               <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                 <button class="btn secondary" style="flex: 1; margin: 0;" onclick="resetScenario()">Yeniden

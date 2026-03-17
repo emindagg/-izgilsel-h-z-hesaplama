@@ -224,11 +224,16 @@ function updateData() {
     const circumference = 2 * Math.PI * (Rkm * radius);
     const speed = circumference / T;
 
+    // Check if we should show speeds (only after step1 activation)
+    const speedDisplay = (step1UiState && step1UiState.showSpeeds) 
+      ? `${speed.toFixed(0)} km/h` 
+      : '---';
+
     html += `
       <tr>
         <td><strong style="color:${plane.color}">${plane.id}</strong></td>
         <td>${plane.latDeg}°</td>
-        <td>${speed.toFixed(0)} km/h</td>
+        <td>${speedDisplay}</td>
       </tr>
     `;
   });
@@ -369,6 +374,11 @@ function checkStep1(answer, btnObj) {
 
   if (answer === 'L') {
     btnObj.classList.add('correct');
+    
+    // Show speeds when correct answer is given
+    step1UiState.showSpeeds = true;
+    updateData();
+    
     showFeedback(1, 'success', '<strong>Tebrikler!</strong> Dünya\'nın gövdesi Ekvator\'da en kalındır (şişkinlik). Kapsadığı mesafe çok uzun olduğundan 1 turu aynı sürede (örneğin 24 saatte) tamamlayabilmesi için K ve M uçaklarından çok daha yüksek bir hızla gitmesi gerekir. L\'nin hızının ne kadar yüksek olduğuna dikkat edin!');
     document.getElementById('next-1').classList.remove('hidden');
   } else {
@@ -389,7 +399,7 @@ function checkStep2(answer, btnObj) {
 
   if (answer === 'sapmaya uğrar') {
     btnObj.classList.add('correct');
-    showFeedback(2, 'success', '<strong>Doğru bir varsayım!</strong> Dünya her yerinde aynı hızla dönseydi rüzgârlar dümdüz eserdi. Ancak alttaki zemin hareketli ve çizgisel hızı sürekli değiştiği için rüzgârların yönü de adeta savrulur. (Bknz: Coriolis Etkisi)');
+    showFeedback(2, 'success', '<strong>Doğru bir varsayım!</strong> Dünya her yerde aynı hızla dönseydi rüzgârlar dümdüz eserdi. Ancak alttaki zemin hareketli ve çizgisel hızı sürekli değiştiği için rüzgârların yönü değişir. (Bknz: Coriolis Etkisi)');
     document.getElementById('next-2').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
@@ -462,7 +472,7 @@ function checkStep4(answer, btnObj) {
 
   if (answer === 'Hayır') {
     btnObj.classList.add('correct');
-    showFeedback(4, 'success', '<strong>Müthiş bir analiz!</strong> Eğer dinamik (hız kaynaklı) bu sapma faktörü olmasaydı rüzgârlar sıcaklığın izini takip ederek dümdüz gider, belirli enlemlerde yığılarak basınç kuşaklarını oluşturmazdı. Hava kütlelerini çemberlere hapseden yegane güç sapmadır.');
+    showFeedback(4, 'success', '<strong>Doğru bir analiz.</strong> Dünya\'nın dönüşünden kaynaklanan Coriolis etkisi olmasaydı, hava kütleleri sadece basınç farkına bağlı olarak kutuplar ve Ekvator arasında doğrusal bir rota izlerdi. Bu sapma kuvveti, rüzgârların yönünü değiştirerek atmosferik sirkülasyonu ve dinamik basınç kuşaklarının oluşmasını sağlar.');
     document.getElementById('next-4').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
