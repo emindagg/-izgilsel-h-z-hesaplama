@@ -410,12 +410,12 @@ function checkStep2(answer, btnObj) {
 
   if (answer === 'sapmaya uğrar') {
     btnObj.classList.add('correct');
-    showFeedback(2, 'success', '<strong>Doğru bir varsayım!</strong> Dünya her yerde aynı hızla dönseydi rüzgârlar dümdüz eserdi. Ancak alttaki zemin hareketli ve çizgisel hızı sürekli değiştiği için rüzgârların yönü değişir. (Bknz: Coriolis Etkisi)');
+    showFeedback(2, 'success', '<strong>Doğru bir varsayım!</strong> Dünya her yerde aynı hızla dönseydi okyanus akıntıları daha doğrusal ilerlerdi. Ancak alttaki zemin hareketli ve çizgisel hızı sürekli değiştiği için akıntıların yönü sapar. (Bknz: Coriolis Etkisi)');
     document.getElementById('next-2').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
     blank.classList.remove('filled');
-    showFeedback(2, 'error', '<strong>Yanlış.</strong> Hava kütlesi dümdüz gitmek ister, ancak onun altında hızla hareket eden bir zemin (Dünya) vardır. Zemin ona göre hızlı veya yavaş kalırsa ne olur?');
+    showFeedback(2, 'error', '<strong>Yanlış.</strong> Okyanus akıntısı dümdüz ilerlemek ister; ancak altında farklı çizgisel hızlara sahip hareketli bir zemin (Dünya) vardır. Bu hız farkı akıntının yönünü değiştirir.');
     document.getElementById('next-2').classList.add('hidden');
   }
 }
@@ -424,7 +424,7 @@ function checkStep2(answer, btnObj) {
 function shootWind() {
   const btn = document.getElementById('btn-shoot-wind');
   btn.disabled = true;
-  btn.textContent = "💨 Rüzgar Başlatıldı...";
+  btn.textContent = "🌊 Akıntı Başlatıldı...";
 
   const windPath = document.getElementById('wind-path');
 
@@ -462,7 +462,7 @@ function shootWind() {
   setTimeout(() => {
     document.getElementById('feedback-3').classList.remove('hidden');
     document.getElementById('next-3').classList.remove('hidden');
-    btn.textContent = "✅ Rüzgâr Sapması Doğrulandı";
+    btn.textContent = "✅ Akıntı Sapması Doğrulandı";
 
     // Start blinking after the path is fully drawn
     windPath.classList.add('blink-arrow');
@@ -470,7 +470,7 @@ function shootWind() {
     // reset visual after a while to let them play again if needed
     setTimeout(() => {
       btn.disabled = false;
-      btn.textContent = "🌪 Rüzgarı Tekrar Başlat";
+      btn.textContent = "🌊 Akıntıyı Tekrar Başlat";
     }, 1500); // Allow them to click again sooner, arrow stays blinking
   }, 2100);
 }
@@ -483,11 +483,11 @@ function checkStep4(answer, btnObj) {
 
   if (answer === 'Hayır') {
     btnObj.classList.add('correct');
-    showFeedback(4, 'success', '<strong>Doğru bir analiz.</strong> Dünya\'nın dönüşünden kaynaklanan Coriolis etkisi olmasaydı, hava kütleleri sadece basınç farkına bağlı olarak kutuplar ve Ekvator arasında doğrusal bir rota izlerdi. Bu sapma kuvveti, rüzgârların yönünü değiştirerek atmosferik sirkülasyonu ve dinamik basınç kuşaklarının oluşmasını sağlar.');
+    showFeedback(4, 'success', '<strong>Doğru bir analiz.</strong> Dünya\'nın dönüşünden kaynaklanan Coriolis etkisi olmasaydı, okyanus akıntıları büyük ölçüde daha doğrusal rotalar izlerdi. Bu sapma etkisi, akıntıların yönünü değiştirerek küresel dolaşım düzeninin oluşmasını sağlar.');
     document.getElementById('next-4').classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
-    showFeedback(4, 'error', '<strong>Tekrar düşünün.</strong> Sadece güneş ışınları ısınma/soğuma yaratır ama yığılma ve burgular hız sapmasının (Coriolis) marifetidir.');
+    showFeedback(4, 'error', '<strong>Tekrar düşünün.</strong> Sadece güneş ışınları ısınma/soğuma yaratır; akıntıların yön değiştirmesinde çizgisel hız farkı ve Coriolis etkisi belirleyicidir.');
     document.getElementById('next-4').classList.add('hidden');
   }
 }
@@ -504,7 +504,7 @@ function checkStepOutro(answer, btnObj) {
   if (answer === 'Hayır') {
     btnObj.classList.add('correct');
     feedbackOutro.className = 'feedback-box success mt-4';
-    feedbackOutro.innerHTML = '<strong>Tebrikler!</strong> Doğru cevap. Eğer hız farkı olmasaydı atmosfer de tıpkı bir kutu gibi birlikte hareket ederdi, rüzgârların yönünü saptıracak bir savrulma ortaya çıkmazdı.';
+    feedbackOutro.innerHTML = '<strong>Tebrikler!</strong> Doğru cevap. Eğer hız farkı olmasaydı okyanus akıntıları birlikte hareket eder, yönlerini belirgin biçimde saptıracak bir Coriolis etkisi ortaya çıkmazdı.';
     finalEval.classList.remove('hidden');
   } else {
     btnObj.classList.add('wrong');
