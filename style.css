@@ -597,3 +597,53 @@ input[type=range]:focus {
     flex-direction: column;
   }
 }
+
+/* TEXTURED GLOBE (AŞAMA 5) */
+.textured-globe-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  transition: opacity 0.8s ease;
+  z-index: 20;
+}
+
+.earth-map-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* Using Wikipedia equirectangular blank map */
+  background: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg') repeat-x;
+  background-size: 1000px 500px;
+  background-position: -480px -40px; /* Center over Asia/Indian Ocean */
+  /* Pure Avant-Garde Dark Mode Map Texture */
+  filter: invert(1) brightness(0.6) sepia(0.2) hue-rotate(180deg);
+  transition: background-position 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.earth-map-texture.sway-summer {
+  background-position: -500px -40px; /* Slight rotation when summer monsoon plays */
+}
+
+.earth-map-texture.sway-winter {
+  background-position: -460px -40px; /* Slight rotation when winter monsoon plays */
+}
+
+.globe-overlay-shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset -60px -60px 80px rgba(0, 0, 0, 0.95), inset 20px 20px 50px rgba(255, 255, 255, 0.15), 0 0 50px rgba(59, 130, 246, 0.15);
+  pointer-events: none;
+}
+
+.monsoon-overlay-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

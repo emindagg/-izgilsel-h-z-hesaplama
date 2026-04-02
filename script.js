@@ -333,6 +333,28 @@ function goToStep(stepId) {
   document.querySelectorAll('.scenario-step').forEach(el => el.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
 
+  // Toggle visualizer based on step
+  const globeSvg = document.getElementById('globe');
+  const texturedGlobe = document.getElementById('textured-globe-container');
+  
+  if (String(stepId) === '5') {
+    if (globeSvg) {
+      // Use visibility hidden to preserve layout space and prevent container collapse
+      globeSvg.style.visibility = 'hidden';
+      globeSvg.style.opacity = '0';
+    }
+    if (texturedGlobe) texturedGlobe.classList.remove('hidden');
+    // Ensure play/pause button is hidden from step 5 overlay if needed
+    document.getElementById('playPauseBtn').style.display = 'none';
+  } else {
+    if (globeSvg) {
+      globeSvg.style.visibility = '';
+      globeSvg.style.opacity = '';
+    }
+    if (texturedGlobe) texturedGlobe.classList.add('hidden');
+    document.getElementById('playPauseBtn').style.display = 'flex';
+  }
+
   if (String(stepId) === '1') {
     applyStep1UiState();
   }
@@ -427,36 +449,38 @@ function shootWind() {
   btn.textContent = "🌊 Akıntı Başlatıldı...";
 
   const windPath = document.getElementById('wind-path');
+  const motion = document.getElementById('motion-step3');
+  const headGroup = document.getElementById('head-step3');
 
-  // Create an arc representing the wind trajectory from North moving towards Equator
-  // Deviates to the right (South-West, which is screen-left) due to Coriolis in Northern Hemisphere
   const startX = CX;
-  const startY = CY - R + 20; // Start at the North Pole region, inside the globe
-  // Target Equator but swept by rotation
-  const endX = CX - 120; // Deflected to the West (Left)
-  const endY = CY + 10;  // Reach the Equator region
+  const startY = CY - R + 20; 
+  const endX = CX - 120; 
+  const endY = CY + 10;  
 
-  // Bezier Curve: Control point starts straight down (South), then curves West
-  // By keeping control point's X equal to startX, initial direction is straight south.
-  // It curves "right" relative to its path, landing in the South-West!
-  windPath.setAttribute("d", `M ${startX} ${startY} Q ${CX} ${CY - 60} ${endX} ${endY}`);
+  const dPath = `M ${startX} ${startY} Q ${CX} ${CY - 60} ${endX} ${endY}`;
+  windPath.setAttribute("d", dPath);
+  if (motion) motion.setAttribute("path", dPath);
 
-  // Reset dash array for drawing animation (Disable transition so it snaps back instantly)
   windPath.style.transition = "none";
-  windPath.classList.remove('blink-arrow'); // Clear blink if running again
+  windPath.classList.remove('blink-arrow');
   windPath.style.opacity = "1";
+  
+  if (headGroup) {
+     headGroup.classList.remove('blink-arrow');
+     headGroup.style.opacity = "0";
+  }
 
   const length = windPath.getTotalLength();
   windPath.style.strokeDasharray = length;
   windPath.style.strokeDashoffset = length;
 
-  // Force a clean reflow
   windPath.getBoundingClientRect();
 
-  // Allow browser time to apply "none" transition before we activate it again
   setTimeout(() => {
     windPath.style.transition = "stroke-dashoffset 2s ease-out";
     windPath.style.strokeDashoffset = "0";
+    if (headGroup) headGroup.style.opacity = "1";
+    if (motion) motion.beginElement();
   }, 50);
 
   setTimeout(() => {
@@ -464,14 +488,13 @@ function shootWind() {
     document.getElementById('next-3').classList.remove('hidden');
     btn.textContent = "✅ Akıntı Sapması Doğrulandı";
 
-    // Start blinking after the path is fully drawn
     windPath.classList.add('blink-arrow');
+    if (headGroup) headGroup.classList.add('blink-arrow');
 
-    // reset visual after a while to let them play again if needed
     setTimeout(() => {
       btn.disabled = false;
       btn.textContent = "🌊 Akıntıyı Tekrar Başlat";
-    }, 1500); // Allow them to click again sooner, arrow stays blinking
+    }, 1500);
   }, 2100);
 }
 
@@ -490,6 +513,108 @@ function checkStep4(answer, btnObj) {
     showFeedback(4, 'error', '<strong>Tekrar düşünün.</strong> Sadece güneş ışınları ısınma/soğuma yaratır; akıntıların yön değiştirmesinde çizgisel hız farkı ve Coriolis etkisi belirleyicidir.');
     document.getElementById('next-4').classList.add('hidden');
   }
+}
+
+// Step 5: Monsoon Wind Animations
+function playMonsoon(type) {
+  const summerPath = document.getElementById('texture-summer-path');
+  const winterPath = document.getElementById('texture-winter-path');
+  const headSummer = document.getElementById('head-summer');
+  const headWinter = document.getElementById('head-winter');
+  const motionSummer = document.getElementById('motion-summer');
+  const motionWinter = document.getElementById('motion-winter');
+  
+  const btnSummer = document.getElementById('btn-summer');
+  const btnWinter = document.getElementById('btn-winter');
+  const feedback = document.getElementById('feedback-5');
+  const earthMap = document.getElementById('earth-texture');
+
+  // Reset animations
+  summerPath.style.opacity = "0";
+  winterPath.style.opacity = "0";
+  summerPath.style.transition = "none";
+  winterPath.style.transition = "none";
+  
+  if (headSummer) headSummer.style.opacity = "0";
+  if (headWinter) headWinter.style.opacity = "0";
+  
+  earthMap.classList.remove('sway-summer', 'sway-winter');
+
+  let activePath, message, dPath, activeHead, activeMotion;
+
+  // ViewBox is 420x420. Center is 210. 
+  if (type === 'summer') {
+    activePath = summerPath;
+    activeHead = headSummer;
+    activeMotion = motionSummer;
+    earthMap.classList.add('sway-summer');
+    
+    // Summer: Hint Okyanusu (Equator region, bottom center-left) -> Asya (top right)
+    const startX = 200; 
+    const startY = 250; 
+    const endX = 260; // Asya kara içleri
+    const endY = 170;
+    dPath = `M ${startX} ${startY} Q 250 230 ${endX} ${endY}`;
+    activePath.setAttribute("d", dPath);
+    if(activeMotion) activeMotion.setAttribute("path", dPath);
+    
+    message = "<strong>Yaz Musonu (Denizden Karaya):</strong> Hint Okyanusu'ndan Asya'ya doğru eser. Kuzey Yarımküre'de hareket yönünün sağına saptığı için Güney ve Güneydoğu Asya'ya bol yağış bırakır.";
+  } else {
+    activePath = winterPath;
+    activeHead = headWinter;
+    activeMotion = motionWinter;
+    earthMap.classList.add('sway-winter');
+    
+    // Winter: Asya (top right) -> Okyanus (Equator region)
+    const startX = 260;
+    const startY = 150;
+    const endX = 180;
+    const endY = 240;
+    dPath = `M ${startX} ${startY} Q 200 170 ${endX} ${endY}`;
+    activePath.setAttribute("d", dPath);
+    if(activeMotion) activeMotion.setAttribute("path", dPath);
+    
+    message = "<strong>Kış Musonu (Karadan Denize):</strong> Asya Kıtası'ndan Okyanusa doğru eser. Karadan geldiği için genellikle kurudur, yönü yine Coriolis etkisiyle sağa kavislenerek şekillenir.";
+  }
+
+  btnSummer.disabled = true;
+  btnWinter.disabled = true;
+
+  activePath.getBoundingClientRect(); // force reflow
+  
+  // start animation
+  activePath.style.opacity = "1";
+  const length = activePath.getTotalLength();
+  activePath.style.strokeDasharray = length;
+  activePath.style.strokeDashoffset = length;
+  
+  setTimeout(() => {
+    activePath.style.transition = "stroke-dashoffset 2s ease-out";
+    activePath.style.strokeDashoffset = "0";
+    if (activeHead) activeHead.style.opacity = "1";
+    if (activeMotion) activeMotion.beginElement();
+  }, 50);
+
+  setTimeout(() => {
+    feedback.classList.remove('hidden');
+    if (type === 'summer') {
+       feedback.className = "feedback-box mt-4";
+       feedback.style.borderLeft = "4px solid #ef4444";
+       feedback.style.background = "rgba(239, 68, 68, 0.1)";
+       feedback.style.color = "#fef2f2";
+    } else {
+       feedback.className = "feedback-box mt-4";
+       feedback.style.borderLeft = "4px solid #3b82f6";
+       feedback.style.background = "rgba(59, 130, 246, 0.1)";
+       feedback.style.color = "#eff6ff";
+    }
+    feedback.innerHTML = message;
+    
+    document.getElementById('next-5').classList.remove('hidden');
+    
+    btnSummer.disabled = false;
+    btnWinter.disabled = false;
+  }, 2100);
 }
 
 // Step Outro: Final Question
@@ -528,6 +653,41 @@ function resetScenario() {
     blank.classList.remove('filled');
   }
 
+  const summerPath = document.getElementById('texture-summer-path');
+  if (summerPath) {
+    summerPath.style.opacity = "0";
+    summerPath.style.transition = "none";
+  }
+
+  const winterPath = document.getElementById('texture-winter-path');
+  if (winterPath) {
+    winterPath.style.opacity = "0";
+    winterPath.style.transition = "none";
+  }
+  
+  const headSummer = document.getElementById('head-summer');
+  if (headSummer) headSummer.style.opacity = "0";
+  const headWinter = document.getElementById('head-winter');
+  if (headWinter) headWinter.style.opacity = "0";
+  
+  const headStep3 = document.getElementById('head-step3');
+  if (headStep3) {
+      headStep3.style.opacity = "0";
+      headStep3.classList.remove('blink-arrow');
+  }
+  
+  const windPath = document.getElementById('wind-path');
+  if(windPath) {
+      windPath.style.opacity = "0";
+      windPath.style.transition = "none";
+      windPath.classList.remove('blink-arrow');
+  }
+  
+  const earthMap = document.getElementById('earth-texture');
+  if(earthMap) {
+     earthMap.classList.remove('sway-summer', 'sway-winter');
+  }
+
   resetStep1Challenge();
   stopSim();
   goToStep('intro');
@@ -542,6 +702,7 @@ browserHandlersApi.registerWindowHandlers(window, {
   checkStep2,
   shootWind,
   checkStep4,
+  playMonsoon,
   checkStepOutro,
   resetScenario,
   activateStep1Challenge
