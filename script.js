@@ -599,9 +599,9 @@ function playMonsoon(type) {
     feedback.classList.remove('hidden');
     if (type === 'summer') {
        feedback.className = "feedback-box mt-4";
-       feedback.style.borderLeft = "4px solid #ef4444";
-       feedback.style.background = "rgba(239, 68, 68, 0.1)";
-       feedback.style.color = "#fef2f2";
+       feedback.style.borderLeft = "4px solid #f59e0b";
+       feedback.style.background = "rgba(245, 158, 11, 0.1)";
+       feedback.style.color = "#fef3c7";
     } else {
        feedback.className = "feedback-box mt-4";
        feedback.style.borderLeft = "4px solid #3b82f6";

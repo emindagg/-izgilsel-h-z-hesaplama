@@ -88,7 +88,8 @@
               stroke-linecap="round" opacity="0" />
             <g id="head-step3" opacity="0" fill="#10b981">
               <polygon points="-5,-4 5,0 -5,4" />
-              <animateMotion id="motion-step3" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0 0 0.2 1" rotate="auto" />
+              <animateMotion id="motion-step3" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1"
+                keySplines="0 0 0.2 1" rotate="auto" />
             </g>
 
             <!-- Planes -->
@@ -100,18 +101,20 @@
             <div id="earth-texture" class="earth-map-texture"></div>
             <div class="globe-overlay-shadow"></div>
             <svg viewBox="0 0 420 420" class="monsoon-overlay-svg">
-              <path id="texture-summer-path" fill="none" stroke="#ef4444" stroke-width="4" stroke-dasharray="0"
+              <path id="texture-summer-path" fill="none" stroke="#f59e0b" stroke-width="4" stroke-dasharray="0"
                 stroke-linecap="round" opacity="0" />
-              <g id="head-summer" opacity="0" fill="#ef4444">
+              <g id="head-summer" opacity="0" fill="#f59e0b">
                 <polygon points="-6,-5 6,0 -6,5" />
-                <animateMotion id="motion-summer" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0 0 0.2 1" rotate="auto" />
+                <animateMotion id="motion-summer" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1"
+                  keySplines="0 0 0.2 1" rotate="auto" />
               </g>
-              
+
               <path id="texture-winter-path" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="0"
                 stroke-linecap="round" opacity="0" />
               <g id="head-winter" opacity="0" fill="#3b82f6">
                 <polygon points="-6,-5 6,0 -6,5" />
-                <animateMotion id="motion-winter" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0 0 0.2 1" rotate="auto" />
+                <animateMotion id="motion-winter" dur="2s" fill="freeze" calcMode="spline" keyTimes="0;1"
+                  keySplines="0 0 0.2 1" rotate="auto" />
               </g>
             </svg>
           </div>
@@ -159,11 +162,14 @@
           <div id="step-1" class="scenario-step">
             <span class="badge">Aşama 1</span>
             <h2>Hız İhtiyacını Belirleme</h2>
-            <p>Yandaki simülasyonda 80° kuzey enleminde K, 0° (Ekvator) üzerinde L ve 45° güney enleminde M uçakları gösterilmektedir.
+            <p>Yandaki simülasyonda 80° kuzey enleminde K, 0° (Ekvator) üzerinde L ve 45° güney enleminde M uçakları
+              gösterilmektedir.
               Bu uçaklar, Dünya ile birlikte dönerek bir tam turu aynı anda tamamlamaktadır.</p>
-            <p class="question">Buna göre, verilen uçaklardan hangisi bir tam turu aynı sürede tamamlayabilmek için en yüksek çizgisel hıza sahip olmalıdır?</p>
+            <p class="question">Buna göre, verilen uçaklardan hangisi bir tam turu aynı sürede tamamlayabilmek için en
+              yüksek çizgisel hıza sahip olmalıdır?</p>
 
-            <button id="step1-trigger" class="btn primary mt-4 w-full" onclick="activateStep1Challenge()">Uçakları Hareket Ettir</button>
+            <button id="step1-trigger" class="btn primary mt-4 w-full" onclick="activateStep1Challenge()">Uçakları
+              Hareket Ettir</button>
 
             <div id="step1-choices" class="choice-group hidden mt-4">
               <button class="btn secondary choice-btn step1-btn" onclick="checkStep1('K', this)">K Uçağı</button>
@@ -180,7 +186,8 @@
             <span class="badge">Aşama 2</span>
             <h2>Hız Farkının Etkisi</h2>
             <p>Ekvator'dan kutuplara gidildikçe çizgisel hız azalır.</p>
-            <p class="text-sm">Hedefine ilerleyen okyanus akıntılarını uçaklara benzetebiliriz. Boşluğa uygun olan kelimeyi
+            <p class="text-sm">Hedefine ilerleyen okyanus akıntılarını uçaklara benzetebiliriz. Boşluğa uygun olan
+              kelimeyi
               aşağıdaki butonlardan seçerek cümleyi tamamlayın:</p>
 
             <div class="fill-in-box">
@@ -203,7 +210,8 @@
           <div id="step-3" class="scenario-step">
             <span class="badge">Aşama 3</span>
             <h2>Coriolis (Sapma) Etkisi</h2>
-            <p>Varsayımınızı test edelim. Bir okyanus akıntısının Kuzey Kutbu'ndan Ekvator'a doğru "dümdüz" ilerlemeye çalıştığını
+            <p>Varsayımınızı test edelim. Bir okyanus akıntısının Kuzey Kutbu'ndan Ekvator'a doğru "dümdüz" ilerlemeye
+              çalıştığını
               düşünün.</p>
             <p>Aşağıdaki butona basarak akıntıyı başlatın ve dünya yüzeyindeki farklı dönüş hızlarının (çizgisel hız
               farkı) akıntıyı nasıl saptırdığını simülasyon üzerinden izleyin.</p>
@@ -211,7 +219,10 @@
             <button id="btn-shoot-wind" class="btn primary w-full" style="background:#10b981; color:#000;"
               onclick="shootWind()">🌊 Akıntıyı Başlat</button>
 
-            <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a yaklaştıkça yerkürenin dönüş hızı arttığı için, kuzeyden güneye inen okyanus akıntısı altındaki zeminin hızına kıyasla daha yavaş kalır. Bu hız farkı nedeniyle akıntı, Doğu'ya doğru ilerleyen zeminin gerisinde kalarak Batı'ya doğru (Kuzey Yarımküre'de hareket yönünün sağına) kavis çizer.</div>
+            <div id="feedback-3" class="feedback-box success hidden mt-4"><strong>Doğrulandı!</strong> Ekvator'a
+              yaklaştıkça yerkürenin dönüş hızı arttığı için, kuzeyden güneye inen okyanus akıntısı altındaki zeminin
+              hızına kıyasla daha yavaş kalır. Bu hız farkı nedeniyle akıntı, Doğu'ya doğru ilerleyen zeminin gerisinde
+              kalarak Batı'ya doğru (Kuzey Yarımküre'de hareket yönünün sağına) kavis çizer.</div>
             <button id="next-3" class="btn primary mt-4 w-full hidden" onclick="goToStep(4)">Sonraki Aşama ➜</button>
           </div>
 
@@ -219,12 +230,15 @@
           <div id="step-4" class="scenario-step">
             <span class="badge">Aşama 4</span>
             <h2>Sonuç: Okyanus Akıntı Sistemleri</h2>
-            <p>Uçakların deneyimlediği bu çizgisel hız farkı, okyanus akıntılarının yön değiştirmesinin temel nedenlerinden biridir. Coriolis etkisi, akıntıların küresel dağılışını ve dolaşım düzenini belirgin biçimde şekillendirir.</p>
+            <p>Uçakların deneyimlediği bu çizgisel hız farkı, okyanus akıntılarının yön değiştirmesinin temel
+              nedenlerinden biridir. Coriolis etkisi, akıntıların küresel dağılışını ve dolaşım düzenini belirgin
+              biçimde şekillendirir.</p>
             <p class="question">Sizce Coriolis etkisi olmasaydı bu okyanus akıntı sistemleri yön
               değiştirerek oluşur muydu?</p>
 
             <div class="choice-group">
-              <button class="btn secondary choice-btn step4-btn" onclick="checkStep4('Evet', this)">Evet, yalnızca sıcaklık farkı
+              <button class="btn secondary choice-btn step4-btn" onclick="checkStep4('Evet', this)">Evet, yalnızca
+                sıcaklık farkı
                 yeterliydi.</button>
               <button class="btn secondary choice-btn step4-btn" onclick="checkStep4('Hayır', this)">Hayır, sapma ve hız
                 farkı belirleyicidir.</button>
@@ -238,12 +252,18 @@
           <div id="step-5" class="scenario-step">
             <span class="badge">Aşama 5</span>
             <h2>Muson Rüzgarları ve Etkisi</h2>
-            <p>Coriolis (Sapma) etkisinin ve yarımkürelerdeki ısınma farklarının en güzel örneklerinden biri de <strong>Muson Rüzgarları</strong>dır.</p>
-            <p>Hint Okyanusu ile Asya kıtası arasındaki koca kütlenin farklı ısınması sonucu yön değiştiren bu rüzgarlar, Dünya'nın dönüşü sayesinde kavisli rotalar çizerler.</p>
-            
+            <p>Coriolis (Sapma) etkisinin ve yarımkürelerdeki ısınma farklarının en güzel örneklerinden biri de
+              <strong>Muson Rüzgarları</strong>dır.</p>
+            <p>Hint Okyanusu ile Asya kıtasının farklı ısınması sonucu yön değiştiren bu rüzgarlar, Dünya'nın dönüşü
+              sayesinde kavisli rotalar çizerler.</p>
+
             <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:1rem;">
-              <button id="btn-summer" class="btn primary w-full" style="background:rgba(239, 68, 68, 0.15); color:#fca5a5; border:1px solid #ef4444;" onclick="playMonsoon('summer')">☀️ Yaz Musonu (Denizden Karaya)</button>
-              <button id="btn-winter" class="btn primary w-full" style="background:rgba(59, 130, 246, 0.15); color:#93c5fd; border:1px solid #3b82f6;" onclick="playMonsoon('winter')">❄️ Kış Musonu (Karadan Denize)</button>
+              <button id="btn-summer" class="btn primary w-full"
+                style="background:rgba(245, 158, 11, 0.15); color:#fcd34d; border:1px solid #f59e0b;"
+                onclick="playMonsoon('summer')">☀️ Yaz Musonu (Denizden Karaya)</button>
+              <button id="btn-winter" class="btn primary w-full"
+                style="background:rgba(59, 130, 246, 0.15); color:#93c5fd; border:1px solid #3b82f6;"
+                onclick="playMonsoon('winter')">❄️ Kış Musonu (Karadan Denize)</button>
             </div>
 
             <div id="feedback-5" class="feedback-box hidden mt-4"></div>
@@ -269,7 +289,9 @@
             </div>
 
             <div id="final-evaluation" class="hidden mt-4 text-muted text-sm border-t pt-4">
-              <p><strong>Değerlendirme:</strong> Uçakların hız farkı üzerinden okyanus akıntılarının yön değişimini analiz ettiniz. Dünya'nın şekli ve dönüşü; akıntı sistemlerini ve iklimi belirleyen temel fiziksel dinamiklerdendir.</p>
+              <p><strong>Değerlendirme:</strong> Uçakların hız farkı üzerinden okyanus akıntılarının yön değişimini
+                analiz ettiniz. Dünya'nın şekli ve dönüşü; akıntı sistemlerini ve iklimi belirleyen temel fiziksel
+                dinamiklerdendir.</p>
 
               <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                 <button class="btn secondary" style="flex: 1; margin: 0;" onclick="resetScenario()">Yeniden
